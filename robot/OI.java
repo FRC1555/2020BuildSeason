@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot;
+package frc.robot;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 

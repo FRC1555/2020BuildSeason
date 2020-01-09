@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot.subsystems;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import org.usfirst.frc.team1555.robot.RobotMap;;
+import frc.robot.RobotMap;;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */

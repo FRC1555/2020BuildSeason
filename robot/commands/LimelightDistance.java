@@ -1,7 +1,7 @@
-package org.usfirst.frc.team1555.robot.commands;
+package frc.robot.commands;
 
-import org.usfirst.frc.team1555.robot.Robot;
-import org.usfirst.frc.team1555.robot.subsystems.limelight;
+import frc.robot.Robot;
+import frc.robot.subsystems.limelight;
 
 import edu.wpi.first.wpilibj.command.Command;
 

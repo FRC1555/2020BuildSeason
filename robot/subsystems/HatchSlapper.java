@@ -5,9 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot.subsystems;
+package frc.robot.subsystems;
 
-import org.usfirst.frc.team1555.robot.RobotMap;
+import frc.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;

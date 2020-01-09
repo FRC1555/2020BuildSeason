@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot.subsystems;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 
-import org.usfirst.frc.team1555.robot.Robot;
+import frc.robot.Robot;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
