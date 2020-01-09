@@ -60,7 +60,7 @@ public class limelight extends Subsystem {
 	
 	public static double distanceByTrig(double H1, double H2, double A) {
 		double d;
-		d=(H1-H2)/Math.cos(A);
+		d=(H1-H2)/Math.tan(A);
 		return d;
 	}
 	
