@@ -83,7 +83,7 @@ public class SeekVisionTarget extends Command {
 				xError = 0;
 			}
 			//Checks how far away the target is
-			zError = Robot.kLimelight.distanceByArea();
+			zError = Robot.kLimelight.distanceByTrig(89.75, 30, Robot.kLimelight.getLimeY());
 			speedAdjust = zError/distanceConstant;
 			//Determines steering adjustment based on how far off the angle is
 			steeringAdjust = xError/zError;
