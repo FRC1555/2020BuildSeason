@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package org.usfirst.frc.team1555.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 import java.beans.PropertyChangeListener;
 
-import frc.robot.Robot;
+import org.usfirst.frc.team1555.robot.Robot;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -47,7 +47,7 @@ public class SeekVisionTarget extends Command {
 	public final double distanceConstant = 100;
 	
 	//The value added to lSpeed and rSpeed by default
-	public final double defaultSpeed = 0.2;
+	public final double defaultSpeed = 0.1;
 	
 	//The speed the robot will turn at when searching for the target
 	public final double turnSpeed = 0.25;
@@ -60,7 +60,7 @@ public class SeekVisionTarget extends Command {
 	zError = 0;
 	steeringAdjust = 0;
 	pole = 1;
-	Robot.kLimelight.setPipe(0);
+	Robot.kLimelight.setPipe(2);
 
 	System.out.println("Inititalized");
 
@@ -75,6 +75,7 @@ public class SeekVisionTarget extends Command {
 
         //Checks for a target
 		if (Robot.kLimelight.targetVisible()) {
+			//System.out.println("Target visible");
 			
 			//Checks the error of the angle
 			xError = Robot.kLimelight.getLimeX();
@@ -83,7 +84,7 @@ public class SeekVisionTarget extends Command {
 				xError = 0;
 			}
 			//Checks how far away the target is
-			zError = Robot.kLimelight.distanceByTrig(89.75, 30, Robot.kLimelight.getLimeY());
+			zError = Robot.kLimelight.distanceByArea();
 			speedAdjust = zError/distanceConstant;
 			//Determines steering adjustment based on how far off the angle is
 			steeringAdjust = xError/zError;
@@ -99,8 +100,8 @@ public class SeekVisionTarget extends Command {
 			rSpeed = speedAdjust - steeringAdjust - defaultSpeed;
 			
 			//Drives toward the target
-			Robot.driveL.set(-lSpeed);
-			Robot.driveR.set(rSpeed);
+			Robot.driveL.set(lSpeed);
+			Robot.driveR.set(-rSpeed);
 			
 		  
 		}
