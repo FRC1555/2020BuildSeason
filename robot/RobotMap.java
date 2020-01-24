@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 
 
 
@@ -69,6 +71,8 @@ public class RobotMap {
 	public ColorSensorV3 colourSensor;
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
+	public static ColorMatch colourMatch;
+
 	//Initalizes all the hardware
 	public void mapAll() {
 		leftMotor = new Victor(Lmotor);
@@ -78,6 +82,11 @@ public class RobotMap {
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
 		colourSensor = new ColorSensorV3(i2cPort);
+		colourMatch = new ColorMatch();
+	}
+
+	public ColorMatchResult matchClosestColor(Object detectedColor) {
+		return null;
 	}
 	
 }
