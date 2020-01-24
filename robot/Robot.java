@@ -59,6 +59,8 @@ public class Robot extends TimedRobot {
 	//Declaring subsystems
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
+	public static final RobotMap map
+	= new RobotMap();		//Maps the robot
 	public static final OI m_oi
 	= new OI();		//Object Interface. This creates the controllers
     public static final DriveTrain Drive
@@ -71,8 +73,6 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	public static final RobotMap map
-	= new RobotMap();		//Maps the robot
 
 	//Declaring commands
 	public static ExampleCommand kExampleCommand
