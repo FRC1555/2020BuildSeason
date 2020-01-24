@@ -7,8 +7,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -20,6 +23,11 @@ public class ColorSensor extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
     public RobotMap map = Robot.map;
+
+    public final Color kBlueTarget = map.colourMatch.makeColor(0.143, 0.427, 0.429);
+    public final Color kGreenTarget = map.colourMatch.makeColor(0.197, 0.561, 0.240);
+    public final Color kRedTarget = map.colourMatch.makeColor(0.561, 0.232, 0.114);
+    public final Color kYellowTarget = map.colourMatch.makeColor(0.361, 0.524, 0.113);
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
@@ -43,5 +51,21 @@ public class ColorSensor extends Subsystem {
     //gives the red value detected from the color sensor
     public int proximity(){
         return map.colourSensor.getProximity();
+    }
+    
+    public void robotPeriodic(){
+        String colorString;
+        ColorSensorV3 match = colourMatch.matchClosestColor(detectedColor);
+        if (match.color == kBlueTarget) {
+            colorString = "Blue";
+        } else if (match.color == kRedTarget) {
+            colorString = "Red";
+        } else if (match.color == kGreenTarget) {
+            colorString = "Green";
+        } else if (match.color == kYellowTarget) {
+            colorString = "Yellow";
+        } else {
+            colorString = "Unknown";
+        }
     }
 }
