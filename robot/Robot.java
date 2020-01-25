@@ -5,37 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot;
+package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
-
-
-
-import java.awt.Dialog.ModalityType;
-import java.lang.annotation.Target;
-
- 
-import org.usfirst.frc.team1555.robot.commands.*;
-import org.usfirst.frc.team1555.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1555.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team1555.robot.subsystems.HatchSlapper;
-import org.usfirst.frc.team1555.robot.subsystems.Intake;
-import org.usfirst.frc.team1555.robot.subsystems.Lift;
-import org.usfirst.frc.team1555.robot.subsystems.encoder;
-import org.usfirst.frc.team1555.robot.subsystems.limelight;
-import org.usfirst.frc.team1555.robot.subsystems.pneumatics;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -58,9 +41,9 @@ public class Robot extends TimedRobot {
 
 	//Declaring subsystems
 	public static final ExampleSubsystem kExampleSubsystem
-	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
+	= new frc.robot.subsystems.ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
 	public static final RobotMap map
-	= new RobotMap();		//Maps the robot
+	= new RobotMap();	//Maps the robot
 	public static final OI m_oi
 	= new OI();		//Object Interface. This creates the controllers
     public static final DriveTrain Drive
@@ -73,6 +56,10 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
+	public static final ColorSensor eyeball
+	= new ColorSensor();		//Color sensor for seeing colors
+	public static final Gyroscope kGyro
+	= new Gyroscope();
 
 	//Declaring commands
 	public static ExampleCommand kExampleCommand
@@ -133,7 +120,9 @@ public class Robot extends TimedRobot {
 	  		kPneumatics.compressorOn();
 	  		
 	  		cyclingLead = false;
-			primaryCamActive = true;			
+			primaryCamActive = true;	
+			kGyro.calibrate();
+
 
 	}
 	
@@ -154,6 +143,10 @@ public class Robot extends TimedRobot {
 		System.out.println("disabled");
 		encoder.reset();
 		kLimelight.setPipe(1);
+		//kGyro.reset();
+		if (m_oi.leftButtons[8].get()) {
+			kGyro.calibrate();
+		}
 	}
 	
 	@Override
@@ -211,6 +204,8 @@ public class Robot extends TimedRobot {
 
 		//Used to regulate the speed of the drive train
 		speedDrop = 1.0;
+
+		//kGyro.reset();
 	}
 	
 	@Override
@@ -222,9 +217,24 @@ public class Robot extends TimedRobot {
 		//Prints the encoder reading
 		//System.out.println("Encoder: " + encoder.getDistance());
 		Scheduler.getInstance().run();
-		//Drive controls
-		//System.out.println(m_oi.leftButtons[1].get());
 		
+		//What does the all-seeing eye see?
+		// System.out.println("Red: " + eyeball.red());
+		// System.out.println("Green: " + eyeball.green());
+		// System.out.println("Blue: " + eyeball.blue());
+		// System.out.println("Prox: " + eyeball.proximity());
+		
+		//Reset or get values from the gyro
+		if (m_oi.leftButtons[8].get()) {
+			kGyro.reset();
+		}
+		else if (m_oi.leftButtons[9].get()) {
+			System.out.println("Gyro heading: " + kGyro.angle());
+			//System.out.println("Gyro rate: " + kGyro.rate());
+		}
+		
+
+		//Drive controls
 		//Checks to see if left button one is pressed
 		if (m_oi.leftButtons[1].get()) {
 			//Runs vision seeking controls
