@@ -5,37 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot;
+package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
-
-
-
-import java.awt.Dialog.ModalityType;
-import java.lang.annotation.Target;
-
- 
-import org.usfirst.frc.team1555.robot.commands.*;
-import org.usfirst.frc.team1555.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1555.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team1555.robot.subsystems.HatchSlapper;
-import org.usfirst.frc.team1555.robot.subsystems.Intake;
-import org.usfirst.frc.team1555.robot.subsystems.Lift;
-import org.usfirst.frc.team1555.robot.subsystems.encoder;
-import org.usfirst.frc.team1555.robot.subsystems.limelight;
-import org.usfirst.frc.team1555.robot.subsystems.pneumatics;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
