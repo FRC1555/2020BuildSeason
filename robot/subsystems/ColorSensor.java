@@ -22,7 +22,8 @@ import frc.robot.RobotMap;
  */
 public class ColorSensor extends Subsystem {
 	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
+    // here. Call these from Commands.
+    //All of the k(color)Targets need to be calibrated
     public RobotMap map = Robot.map;
     private final ColorMatch colourMatch = new ColorMatch();
     public final Color kBlueTarget = map.colourMatch.makeColor(0.143, 0.427, 0.429);
@@ -53,16 +54,19 @@ public class ColorSensor extends Subsystem {
     public int proximity(){
         return map.colourSensor.getProximity();
     }
+    //Returns the color that the robot is detecting
     public Color detectedColor(){
         return map.colourSensor.getColor();
     }
-    public void robotInit(){
+    // I still have no idea to explain why to use this but I will figure it out
+    public void robotColorValues(){
         colourMatch.addColorMatch(kBlueTarget);
         colourMatch.addColorMatch(kGreenTarget);
         colourMatch.addColorMatch(kRedTarget);
         colourMatch.addColorMatch(kYellowTarget);
     }
-    public void robotPeriodic(){
+    //This runs the color detection algorithm so that the robot says what it is detecting
+    public void RobotColorDetector(){
         String colorString;
         ColorMatchResult match = colourMatch.matchClosestColor(detectedColor());
         if (match.color == kBlueTarget) {
@@ -76,6 +80,6 @@ public class ColorSensor extends Subsystem {
         } else {
             colorString = "Unknown";
         }
-        
+
     }
 }
