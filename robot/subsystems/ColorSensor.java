@@ -47,7 +47,7 @@ public class ColorSensor extends Subsystem {
             return map.colourSensor.getBlue();
     }
     //gives the red value detected from the color sensor
-    public int ir(){
+    public double ir(){
         return map.colourSensor.getIR();
     }
     //gives the red value detected from the color sensor
@@ -58,6 +58,7 @@ public class ColorSensor extends Subsystem {
     public Color detectedColor(){
         return map.colourSensor.getColor();
     }
+
     // I still have no idea to explain why to use this but I will figure it out
     public void robotColorValues(){
         colourMatch.addColorMatch(kBlueTarget);
@@ -65,11 +66,15 @@ public class ColorSensor extends Subsystem {
         colourMatch.addColorMatch(kRedTarget);
         colourMatch.addColorMatch(kYellowTarget);
     }
+
     //This runs the color detection algorithm so that the robot says what it is detecting
-    public void RobotColorDetector(){
+    public String RobotColorDetector(){
         String colorString;
         ColorMatchResult match = colourMatch.matchClosestColor(detectedColor());
-        if (match.color == kBlueTarget) {
+
+        if (proximity()<120) {
+            colorString = "Unknown";
+        } else if (match.color == kBlueTarget){
             colorString = "Blue";
         } else if (match.color == kRedTarget) {
             colorString = "Red";
@@ -80,6 +85,6 @@ public class ColorSensor extends Subsystem {
         } else {
             colorString = "Unknown";
         }
-
+        return colorString;
     }
 }
