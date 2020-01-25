@@ -8,6 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -60,6 +63,8 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
+	public static Gyro gyro;
+
 	//Initalizes all the hardware
 	public void mapAll() {
 		leftMotor = new Victor(Lmotor);
@@ -68,7 +73,7 @@ public class RobotMap {
 		liftMotor = new Talon(intakeLift);
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
-		
+		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 	}
 	
 }
