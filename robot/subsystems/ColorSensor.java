@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
@@ -23,7 +24,7 @@ public class ColorSensor extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
     public RobotMap map = Robot.map;
-
+    private final ColorMatch colourMatch = new ColorMatch();
     public final Color kBlueTarget = map.colourMatch.makeColor(0.143, 0.427, 0.429);
     public final Color kGreenTarget = map.colourMatch.makeColor(0.197, 0.561, 0.240);
     public final Color kRedTarget = map.colourMatch.makeColor(0.561, 0.232, 0.114);
@@ -52,10 +53,18 @@ public class ColorSensor extends Subsystem {
     public int proximity(){
         return map.colourSensor.getProximity();
     }
-    
+    public Color detectedColor(){
+        return map.colourSensor.getColor();
+    }
+    public void robotInit(){
+        colourMatch.addColorMatch(kBlueTarget);
+        colourMatch.addColorMatch(kGreenTarget);
+        colourMatch.addColorMatch(kRedTarget);
+        colourMatch.addColorMatch(kYellowTarget);
+    }
     public void robotPeriodic(){
         String colorString;
-        ColorSensorV3 match = colourMatch.matchClosestColor(detectedColor);
+        ColorMatchResult match = colourMatch.matchClosestColor(detectedColor());
         if (match.color == kBlueTarget) {
             colorString = "Blue";
         } else if (match.color == kRedTarget) {
@@ -67,5 +76,6 @@ public class ColorSensor extends Subsystem {
         } else {
             colorString = "Unknown";
         }
+        
     }
 }
