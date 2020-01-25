@@ -53,6 +53,11 @@ public class limelight extends Subsystem {
 		}
 	}
 	
+	/* This function is used to measure the distance of the robot to its target
+	h1 is the height from the ground to the center of the outer target 
+	h2 is the distance from the ground to the camera
+	a is the angle measurement for the camera */
+	
 	public static double distanceByTrig(double H1, double H2, double A) {
 		double d;
 		d=(H1-H2)/Math.tan(A);
