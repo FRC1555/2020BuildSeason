@@ -21,21 +21,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
 
-
-
 import java.awt.Dialog.ModalityType;
 import java.lang.annotation.Target;
 
- 
 import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.HatchSlapper;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.encoder;
-import frc.robot.subsystems.limelight;
-import frc.robot.subsystems.pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -59,6 +50,8 @@ public class Robot extends TimedRobot {
 	//Declaring subsystems
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
+	public static final RobotMap map
+	= new RobotMap();		//Maps the robot
 	public static final OI m_oi
 	= new OI();		//Object Interface. This creates the controllers
     public static final DriveTrain Drive
@@ -71,8 +64,6 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	public static final RobotMap map
-	= new RobotMap();		//Maps the robot
 
 	//Declaring commands
 	public static ExampleCommand kExampleCommand
