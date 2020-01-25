@@ -53,8 +53,10 @@ public class limelight extends Subsystem {
 		}
 	}
 	
-	public static double distanceByTrig(double H1, double H2, double A1, double A2) {
-		return 7;
+	public static double distanceByTrig(double H1, double H2, double A) {
+		double d;
+		d=(H1-H2)/Math.tan(A);
+		return d;
 	}
 	
 	public static double distanceByArea() {
