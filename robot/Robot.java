@@ -21,21 +21,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
 
-
-
 import java.awt.Dialog.ModalityType;
 import java.lang.annotation.Target;
 
- 
 import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain;
-import frc.subsystems.ExampleSubsystem;
-import frc.subsystems.HatchSlapper;
-import frc.subsystems.Intake;
-import frc.subsystems.Lift;
-import frc.subsystems.encoder;
-import frc.subsystems.limelight;
-import frc.subsystems.pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
