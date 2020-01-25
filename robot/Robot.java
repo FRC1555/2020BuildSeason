@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team1555.robot;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.Talon;
 
@@ -27,15 +27,15 @@ import java.awt.Dialog.ModalityType;
 import java.lang.annotation.Target;
 
  
-import org.usfirst.frc.team1555.robot.commands.*;
-import org.usfirst.frc.team1555.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1555.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team1555.robot.subsystems.HatchSlapper;
-import org.usfirst.frc.team1555.robot.subsystems.Intake;
-import org.usfirst.frc.team1555.robot.subsystems.Lift;
-import org.usfirst.frc.team1555.robot.subsystems.encoder;
-import org.usfirst.frc.team1555.robot.subsystems.limelight;
-import org.usfirst.frc.team1555.robot.subsystems.pneumatics;
+import frc.robot.commands.*;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.HatchSlapper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.limelight;
+import frc.robot.subsystems.pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
