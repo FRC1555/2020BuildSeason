@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
+import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
@@ -16,8 +17,8 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 
     //Declaring motors
-    public static Victor L = robot.map.leftMotor;
-    public static Victor R = robot.map.Rightmotor;
+    public static Victor L = Robot.map.leftMotor;
+    public static Victor R = Robot.map.rightMotor;
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
