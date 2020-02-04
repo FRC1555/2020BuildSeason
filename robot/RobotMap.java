@@ -10,14 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorMatch;
-
-
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -67,11 +60,6 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
-	public ColorSensorV3 colourSensor;
-	private final I2C.Port i2cPort = I2C.Port.kOnboard;
-
-	public static ColorMatch colourMatch;
-
 	//Initalizes all the hardware
 	public void mapAll() {
 		leftMotor = new Victor(Lmotor);
@@ -80,12 +68,6 @@ public class RobotMap {
 		liftMotor = new Talon(intakeLift);
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
-		colourSensor = new ColorSensorV3(i2cPort);
-		colourMatch = new ColorMatch();
-	}
-
-	public ColorMatchResult matchClosestColor(Object detectedColor) {
-		return null;
 	}
 	
 }
