@@ -10,7 +10,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
+
+
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -43,7 +50,10 @@ public class RobotMap {
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	public static int hatchSlapper1 = 4;
 	public static int hatchSlapper2 = 5;
-	
+	public static int spin = 6;
+	public static int lift = 7;
+	public static int shoot = 8;
+
 	public static int solenoidP1 = 0;
 	public static int solenoidP2 = 1;
 	
@@ -60,6 +70,15 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
+	public ColorSensorV3 colourSensor;
+	private final I2C.Port i2cPort = I2C.Port.kOnboard;
+
+	public static ColorMatch colourMatch;
+
+	public static Victor spinner;
+	public static Victor armLift;
+	public static Victor shooter;
+
 	//Initalizes all the hardware
 	public void mapAll() {
 		leftMotor = new Victor(Lmotor);
@@ -68,6 +87,14 @@ public class RobotMap {
 		liftMotor = new Talon(intakeLift);
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
+		colourSensor = new ColorSensorV3(i2cPort);
+		colourMatch = new ColorMatch();
+		spinner = new Victor(spin);
+		armLift = new Victor(lift);
+		shooter = new Victor(shoot);
 	}
-	
+
+	public ColorMatchResult matchClosestColor(Object detectedColor) {
+		return null;
+	}
 }
