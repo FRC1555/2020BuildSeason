@@ -12,15 +12,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 //Find out why we can't use this import
 //import edu.wpi.first.wpilibj2.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
 public class NavX extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-    AHRS ahrs = Robot.map.ahrs;
+    AHRS ahrs;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -28,6 +24,6 @@ public class NavX extends Subsystem {
     }
     
     public double heading() {
-        return ahrs.getAngle();
+        return Robot.map.ahrs.getAngle();
     }
 }
