@@ -27,10 +27,6 @@ public class Intake extends Subsystem {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 	
-	public static void build() {
-		intake = new Talon(RobotMap.intake);
-	}
-	
 	public void in() {
 		intake.set(0.3);
 	}

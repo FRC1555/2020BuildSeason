@@ -25,7 +25,6 @@ public class Lift extends Subsystem {
 	}
 	
 	public void build() {
-		lift = new Talon(RobotMap.intakeLift);
 	}
 	
 	public void setPower(double speed) {
