@@ -7,15 +7,18 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
+import edu.wpi.first.wpilibj.SPI;
 
 
 
@@ -72,6 +75,8 @@ public class RobotMap {
 
 	public static ColorMatch colourMatch;
 
+	public static AHRS ahrs;
+
 	//Initalizes all the hardware
 	public void mapAll() {
 		leftMotor = new Victor(Lmotor);
@@ -82,6 +87,15 @@ public class RobotMap {
 		slapMotor = new Talon(hatchSlapper2);
 		colourSensor = new ColorSensorV3(i2cPort);
 		colourMatch = new ColorMatch();
+
+		try {
+			/* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
+			/* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
+			/* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
+			ahrs = new AHRS(SPI.Port.kMXP); 
+		} catch (RuntimeException ex ) {
+			DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
+		}
 	}
 
 	public ColorMatchResult matchClosestColor(Object detectedColor) {
