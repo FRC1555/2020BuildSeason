@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -45,8 +46,10 @@ public class RobotMap {
 	//
 	public static Talon intakeMotor;
 	public static Talon liftMotor;
+	public static Talon controlPanelMotor;
 	public static int intake = 2;
 	public static int intakeLift = 3;
+	public static int cpanelMotor = 6;
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	public static int hatchSlapper1 = 4;
 	public static int hatchSlapper2 = 5;
@@ -67,7 +70,7 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
-	public ColorSensorV3 colourSensor;
+	public static ColorSensorV3 colourSensor;
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
 	public static ColorMatch colourMatch;
@@ -82,10 +85,7 @@ public class RobotMap {
 		slapMotor = new Talon(hatchSlapper2);
 		colourSensor = new ColorSensorV3(i2cPort);
 		colourMatch = new ColorMatch();
-	}
-
-	public ColorMatchResult matchClosestColor(Object detectedColor) {
-		return null;
+		controlPanelMotor = new Talon(cpanelMotor);
 	}
 	
 }
