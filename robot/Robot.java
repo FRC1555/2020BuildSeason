@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
 	Encoder encoder;
 
 	//Declaring subsystems
+  public static final RobotMap map
+	= new RobotMap();		//Maps the robot
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
 	public static final ColorSensor kColorSensor 
@@ -65,9 +67,8 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	public static final RobotMap map
-	= new RobotMap();		//Maps the robot
-	  
+	 public static final NavX kNavX
+	= new NavX();
 
 	//Declaring commands
 	public static ExampleCommand kExampleCommand
@@ -227,6 +228,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		//Drive controls
 		//System.out.println(m_oi.leftButtons[1].get());
+		System.out.println("NavX angle: " + kNavX.heading());
 		
 		//Checks to see if left button one is pressed
 		if (m_oi.leftButtons[1].get()) {
