@@ -130,7 +130,8 @@ public class Robot extends TimedRobot {
 	  		kPneumatics.compressorOn();
 	  		
 	  		cyclingLead = false;
-			primaryCamActive = true;			
+			primaryCamActive = true;
+		kColorSensor.robotColorValues();
 
 	}
 	
@@ -249,6 +250,7 @@ public class Robot extends TimedRobot {
 		
 		//CPI controls
 		m_oi.leftButtons[10].toggleWhenPressed(kColorFinder);
+		
 		//Hatch controls
 
 		//Sets the target position of the hatch
