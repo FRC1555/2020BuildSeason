@@ -7,28 +7,14 @@
 
 package frc.robot;
 
-import javax.swing.colorchooser.ColorSelectionModel;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ColorFinder;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RotationControl;
-import frc.robot.commands.SeekVisionTarget;
-import frc.robot.subsystems.ColorSensor;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.encoder;
-import frc.robot.subsystems.limelight;
-import frc.robot.subsystems.pneumatics;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the

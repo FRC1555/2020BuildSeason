@@ -8,24 +8,18 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
-
-import edu.wpi.first.wpilibj.DriverStation;
-
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.util.Color;
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -44,46 +38,45 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-	//Declaring the elements of the drive train
-	public static Victor leftMotor;
-	public static Victor rightMotor;
-	int Lmotor = 0;
-	int Rmotor = 1;
-	
-	//Shooter motors - CAN
-	//Intake
-	//Intake lift
-	//Climb lift
-	//Balancer
-	//CPI lift
-	//CPI spinner
-
+	//Declaring the motor controllers
 	public CANSparkMax shooter1;
 	public CANSparkMax shooter2;
+	public Victor leftDrive;
+	public Victor rightDrive;
+	public Victor shooterLift;
+	public Victor climber;
+	public Victor balancer;
+	public Victor CPILift;
+	public Talon CPISpinner;
+
+	//Declaring the indexes of the motor controllers
+	//The shooters are part of the CAN bus, which puts them on a separate index list
 	int shooter1Index = 0;
 	int shooter2Index = 1;
+	int leftDriveIndex = 0;
+	int rightDriveIndex = 1;
+	int shooterLiftIndex = 2;
+	int climberIndex = 3;
+	int balancerIndex = 4;
+	int CPILiftIndex = 5;
+	int CPISpinnerIndex = 6;
 
-	public static Talon intakeMotor;
-	public static Talon liftMotor;
-	int intake = 2;
-	int intakeLift = 3;
-	public static Talon controlPanelMotor;
-	public static int cpanelMotor = 6;
-
-	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
-	int hatchSlapper1 = 4;
-	int hatchSlapper2 = 5;
-  	int lift = 7;
-	
-	//Transfer the build over to here
+	//Declaring the solenoids and their indexes
+	public DoubleSolenoid exampleSolenoid;
 	int solenoidP1 = 0;
 	int solenoidP2 = 1;
-	public DoubleSolenoid exampleSolenoid;
 	
-	public static Encoder encDriveL;
-	public static Encoder encDriveR;
-	public static Encoder encLiftCPI;
-	public static Encoder encLiftClimber;
+	//Declaring encoders
+	public CANEncoder encShooterA;
+	public CANEncoder encShooterB;
+	public Encoder encDriveL;
+	public Encoder encDriveR;
+	public Encoder encLiftCPI;
+	public Encoder encLiftClimber;
+
+	//Declaring encoder indexes
+	//Each encoder needs two ports on the digital IO
+	//CAN encoders don't need any
 	int encDriveL1 = 0;
 	int encDriveL2 = 1;
 	int encDriveR1 = 2;
@@ -91,50 +84,45 @@ public class RobotMap {
 	int encLiftCPI1 = 4;
 	int encLiftCPI2 = 5;
 	int encLiftClimber1 = 6;
-	int encLiftClimber2 = 7;
-
-	public static CANEncoder encShooterA;
-	public static CANEncoder encShooterB;
+	int encLiftClimber2 = 7;	
 	
+	//Declaring limelight key
+	// TODO: discover whether this is needed or not
 	public static String limeLightKey = "limelight";
-	
-	public static Talon hatchMotor;
-	public static Talon slapMotor;
 
+	//Declaring the color sensor and its dependants
 	public ColorSensorV3 colourSensor;
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
+	public ColorMatch colourMatch;
 
-	public static ColorMatch colourMatch;
-
-	public static AHRS ahrs;
+	//Declaring the navX
+	public AHRS ahrs;
   
-	public static Victor armLift;
-
 	//Initalizes all the hardware
 	public void mapAll() {
 		//Motor controllers
-		leftMotor = new Victor(Lmotor);
-		rightMotor = new Victor(Rmotor);
-		intakeMotor = new Talon(intake);
-		liftMotor = new Talon(intakeLift);
-		hatchMotor = new Talon(hatchSlapper1);
-		slapMotor = new Talon(hatchSlapper2);
-		armLift = new Victor(lift);
-		//Initalizing these devices causes errors while they aren't attached
+		//Initalizing the CAN devices causes errors while they aren't attached
 		// shooter1 = new CANSparkMax(shooter1Index, MotorType.kBrushless);
 		// shooter2 = new CANSparkMax(shooter2Index, MotorType.kBrushless);
-    	controlPanelMotor = new Talon(cpanelMotor);
+		leftDrive = new Victor(leftDriveIndex);
+		rightDrive = new Victor(rightDriveIndex);
+		shooterLift = new Victor(shooterLiftIndex);
+		climber = new Victor(climberIndex);
+		balancer = new Victor(balancerIndex);
+		CPILift = new Victor(CPILiftIndex);
+    	CPISpinner = new Talon(CPISpinnerIndex);
 		
-    //Misc sensors
+    	//Misc sensors
 		colourSensor = new ColorSensorV3(i2cPort);
 		colourMatch = new ColorMatch();
-    try {
+    	try {
 
 			/* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
 			/* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
 			/* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
 			ahrs = new AHRS(SPI.Port.kMXP); 
-		} catch (RuntimeException ex ) {
+		} 
+		catch (RuntimeException ex) {
 			DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
 		}
 
@@ -151,8 +139,4 @@ public class RobotMap {
 		
 	}
 
-	public ColorMatchResult matchClosestColor(Object detectedColor) {
-		return null;
-	}
-	
 }
