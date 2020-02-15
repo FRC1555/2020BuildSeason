@@ -7,26 +7,27 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Talon;
+import javax.swing.colorchooser.ColorSelectionModel;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
-
-import java.awt.Dialog.ModalityType;
-import java.lang.annotation.Target;
-
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.ColorFinder;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SeekVisionTarget;
+import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.limelight;
+import frc.robot.subsystems.pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -48,10 +49,12 @@ public class Robot extends TimedRobot {
 	Encoder encoder;
 
 	//Declaring subsystems
+  public static final RobotMap map
+	= new RobotMap();		//Maps the robot
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
-	public static final RobotMap map
-	= new RobotMap();		//Maps the robot
+	public static final ColorSensor kColorSensor 
+	= new ColorSensor();     //Controls the color sensor 
 	public static final OI m_oi
 	= new OI();		//Object Interface. This creates the controllers
     public static final DriveTrain Drive
@@ -64,12 +67,16 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
+	 public static final NavX kNavX
+	= new NavX();
 
 	//Declaring commands
 	public static ExampleCommand kExampleCommand
 	= new ExampleCommand();
 	public static SeekVisionTarget kSeekVisionTarget
 	= new SeekVisionTarget();
+	public static ColorFinder kColorFinder
+	= new ColorFinder();
 	
 	//Doubles for the motor target positions
 	public static double liftTargetPosition;
@@ -124,7 +131,8 @@ public class Robot extends TimedRobot {
 	  		kPneumatics.compressorOn();
 	  		
 	  		cyclingLead = false;
-			primaryCamActive = true;			
+			primaryCamActive = true;
+		kColorSensor.robotColorValues();
 
 	}
 	
@@ -133,6 +141,8 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		// TODO Auto-generated method stub
 		super.robotPeriodic();
+		
+	  
 	}
 	
 	@Override
@@ -200,6 +210,9 @@ public class Robot extends TimedRobot {
 		driveR.set(0);
 		appendage.set(0);
 
+		//Initalizing variables
+		kColorFinder.colorTargetValue = "Yellow";
+
 		//Used to regulate the speed of the drive train
 		speedDrop = 1.0;
 	}
@@ -215,6 +228,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		//Drive controls
 		//System.out.println(m_oi.leftButtons[1].get());
+		System.out.println("NavX angle: " + kNavX.heading());
 		
 		//Checks to see if left button one is pressed
 		if (m_oi.leftButtons[1].get()) {
@@ -236,6 +250,8 @@ public class Robot extends TimedRobot {
 			}
 		}
 		
+		//CPI controls
+		m_oi.leftButtons[10].toggleWhenPressed(kColorFinder);
 		
 		//Hatch controls
 
