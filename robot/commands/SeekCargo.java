@@ -97,8 +97,8 @@ public class SeekCargo extends Command {
 				
 				//Drives toward the target
 				//Robot.Drive.driveTank(lSpeed, rSpeed);
-				Robot.driveL.set(-lSpeed);
-				Robot.driveR.set(rSpeed);
+				Robot.map.leftMotor.set(-lSpeed);
+				Robot.map.rightMotor.set(rSpeed);
 				
 			  
 			}
@@ -106,13 +106,13 @@ public class SeekCargo extends Command {
 			else {
 				//Turns right if the limelight last saw the target to the right of it's field of view
 				if (pole > 0) {
-					Robot.driveL.set(-turnSpeed);
-					Robot.driveR.set(-turnSpeed);
+					Robot.map.leftMotor.set(-turnSpeed);
+					Robot.map.rightMotor.set(-turnSpeed);
 				}
 				//Turns left if the limelight last saw the target to the left of it's field of view			
 				else {
-					Robot.driveL.set(turnSpeed);
-					Robot.driveR.set(turnSpeed);
+					Robot.map.leftMotor.set(turnSpeed);
+					Robot.map.rightMotor.set(turnSpeed);
 
 				}
 				

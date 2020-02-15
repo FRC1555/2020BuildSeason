@@ -10,10 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
 import frc.robot.subsystems.ColorSensor;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -24,10 +27,10 @@ public class RotationControl extends Command {
 	//
 	String Color2;
 
+	public String lastColor;
+
 	Talon spinner;
-	
-	//String[] col = ("Green", "Blue", "Yellow", "Red");
-	
+		
 	//
 	boolean Flag;
 	//
@@ -35,13 +38,13 @@ public class RotationControl extends Command {
     
     public RotationControl() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.kExampleSubsystem);
+		requires(Robot.kColorSensor);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		startColor = "Unknown";
+		lastColor = "Unknown";
 		Flag = true;
 		Ticks = 0;
 		spinner = Robot.map.controlPanelMotor;
@@ -52,32 +55,35 @@ public class RotationControl extends Command {
 	protected void execute() {
 		// Spin for 4 rotations
         // Store the current color
-		if (startColor == "Unknown") {
-			startColor = Robot.kColorSensor.RobotColorDetector();
+		if (lastColor == "Unknown") {
+			lastColor = Robot.kColorSensor.RobotColorDetector();
 			return;
 		}
-		spinner.set(0.1);
+		spinner.set(0.2);
 
 		// Check for a color change
 		
 		Color2 = Robot.kColorSensor.RobotColorDetector();
 		
-		if (Color2 == startColor) {
-			if (!Flag) {
-				Ticks += 1;
-			}
-			Flag = true;
+		if (Color2 == Robot.kColorSensor.nextColorClockwise(lastColor)) {
+			// if (!Flag) {
+			// 	Ticks += 1;
+			// }
+			// Flag = true;
+			Ticks += 1;
+			lastColor = Color2;
 		}
-		else {
-			Flag = false;
-		}
+		System.out.println(Ticks);
+		// else {
+		// 	Flag = false;
+		// }
 		// Stop after 8 ticks have been accumulated
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (Ticks == 8) {
+		if (Ticks == 32) {
 			return true;
 		}
 		else {
@@ -96,4 +102,6 @@ public class RotationControl extends Command {
 	@Override
 	protected void interrupted() {
 	}
+
+	
 }

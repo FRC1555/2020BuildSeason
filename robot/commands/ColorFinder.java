@@ -25,32 +25,42 @@ public class ColorFinder extends Command {
 
 	public String colorTargetValue;
 	public String colorFound;
+	public String lastColor;
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		lastColor = "Unknown";
 	}
 
 	// Called repeatedly when this Command is scheduled to run
     @Override
     //for this function put it to a button and then make the program run based off of what the button is returning
 	public void execute() {
-		Robot.map.controlPanelMotor.set(1);
+		if ((lastColor == "Unknown") || (lastColor == null)) {
+			lastColor = Robot.kColorSensor.RobotColorDetector();
+			return;
+		}
+
+		Robot.map.controlPanelMotor.set(0.2);
 		colorFound = Robot.kColorSensor.RobotColorDetector();
+		if (colorFound == Robot.kColorSensor.nextColorClockwise(lastColor)) {
+			lastColor = colorFound;
+		}
 		System.out.println("Searching for " + colorTargetValue);
 		System.out.println("Currently veiwing " + colorFound);
 
 	}
 
-
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if(colorFound.equals(colorTargetValue)) {
+		if(lastColor.equals(colorTargetValue)) {
 			return true;
-		}else {
+		}
+		else {
 			return false;
-			}
+		}
 	}
 
 	// Called once after isFinished returns true
