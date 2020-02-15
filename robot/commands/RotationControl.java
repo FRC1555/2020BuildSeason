@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -23,7 +24,7 @@ public class RotationControl extends Command {
 	//
 	String Color2;
 
-	Victor spinner = Robot.map.spinner;
+	Talon spinner;
 	
 	//String[] col = ("Green", "Blue", "Yellow", "Red");
 	
@@ -41,8 +42,9 @@ public class RotationControl extends Command {
 	@Override
 	protected void initialize() {
 		startColor = "Unknown";
-		Flag = false;
+		Flag = true;
 		Ticks = 0;
+		spinner = Robot.map.controlPanelMotor;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -51,14 +53,14 @@ public class RotationControl extends Command {
 		// Spin for 4 rotations
         // Store the current color
 		if (startColor == "Unknown") {
-			startColor = Robot.eyeball.RobotColorDetector();
+			startColor = Robot.kColorSensor.RobotColorDetector();
 			return;
 		}
-		spinner.set(1);
+		spinner.set(0.1);
 
 		// Check for a color change
 		
-		Color2 = Robot.eyeball.RobotColorDetector();
+		Color2 = Robot.kColorSensor.RobotColorDetector();
 		
 		if (Color2 == startColor) {
 			if (!Flag) {
