@@ -17,7 +17,8 @@ import frc.robot.Robot;
 public class Shooter extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	public static Victor shoot = Robot.map.shooter;
+	// TODO: edit this reference to the SparkMAXs
+	//public static Victor shoot = Robot.map.shooter;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -25,12 +26,12 @@ public class Shooter extends Subsystem {
     }
 
 	public static void FullPower() {
-        shoot.set(1);
+        //shoot.set(1);
     }
     public static void Stop() {
-        shoot.set(0);
+        //shoot.set(0);
     }
     public static void Reverse() {
-        shoot.set(-1);
+        //shoot.set(-1);
 	}
 }
