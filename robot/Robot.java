@@ -38,22 +38,10 @@ import frc.robot.subsystems.pneumatics;
  * project.
  */
 public class Robot extends TimedRobot {
-	
-	//Declaring motor controllers
-	//Victors, Talons, and Sparks are the three types of motor controllers
-	public static Victor driveL;
-	public static Victor driveR;
-	public static Talon appendage;
-
-	//Declaring sensors
-	DigitalInput limit;
-	Encoder encoder;
 
 	//Declaring subsystems
   	public static final RobotMap map
 	= new RobotMap();		//Maps the robot
-	public static final ExampleSubsystem kExampleSubsystem
-	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
 	public static final ColorSensor kColorSensor 
 	= new ColorSensor();     //Controls the color sensor 
 	public static final OI m_oi
@@ -68,37 +56,21 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	public static final NavX kNavX
-	= new NavX();
+	// public static final NavX kNavX
+	// = new NavX();
 
 	//Declaring commands
-	public static ExampleCommand kExampleCommand
-	= new ExampleCommand();
 	public static SeekVisionTarget kSeekVisionTarget
 	= new SeekVisionTarget();
 	public static ColorFinder kColorFinder
 	= new ColorFinder();
 	public static RotationControl kRotationControl
 	= new RotationControl();
-	
-	//Doubles for the motor target positions
-	public static double liftTargetPosition;
-	public static double hatchTargetPosition;
-	public static final int liftHomePosition = 0;
-	public static final double liftScorePosition = 10000;
-	public static final double liftIntakePosition = 46000;
-	public static final double hatchScorePosition = 21000;
-	public static final double hatchHomePosition = 0;
-	public static final double hatchFloorPosition = 70000;
 
 	double speedDrop;
 
-	boolean cyclingLead;
-
     //Declaring commands
 	Command m_autonomousCommand;
-
-	
 	
 	//Used for the camera controls
 	public static boolean primaryCamActive;
@@ -116,11 +88,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		//Mapping all the hardware
 		map.mapAll();
-		driveL = map.leftMotor;
-		driveR = map.rightMotor;
-		appendage = map.intakeMotor;
 
-		limit = new DigitalInput(0);
+		//limit = new DigitalInput(0);
 		//encoder = new Encoder(9, 8);
 	    
 	  //Autonomous stuff I haven't figured out yet
@@ -133,7 +102,6 @@ public class Robot extends TimedRobot {
 	  		kPneumatics.solenoidOff();
 	  		kPneumatics.compressorOn();
 	  		
-	  		cyclingLead = false;
 			primaryCamActive = true;
 		kColorSensor.robotColorValues();
 
@@ -144,19 +112,15 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		// TODO Auto-generated method stub
 		super.robotPeriodic();
-		
-	  
 	}
 	
 	@Override
 	public void disabledInit() {
-		driveL.stopMotor();
-		driveR.stopMotor();
-		appendage.stopMotor();
+		Drive.stop();
 		
 		super.disabledInit();
 		System.out.println("disabled");
-		encoder.reset();
+		//encoder.reset();
 		kLimelight.setPipe(1);
 	}
 	
@@ -184,8 +148,6 @@ public class Robot extends TimedRobot {
 		kLimelight.setStreamPrimary();
 		//kLimelight.setStreamSecondary();
 		kLimelight.setPipe(1);
-		hatchTargetPosition = 0;
-		liftTargetPosition = 0;
 	}
 
 	/**
@@ -194,7 +156,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		tedFerdenan();
+		teleOpControl();
 	}
 	
 	@Override
@@ -208,13 +170,10 @@ public class Robot extends TimedRobot {
 //		if (m_autonomousCommand != null) {
 //			m_autonomousCommand.cancel();
 //		}
-
-		driveL.set(0);
-		driveR.set(0);
-		appendage.set(0);
+		Drive.stop();
 
 		//Initalizing variables
-		kColorFinder.colorTargetValue = "Yellow";
+		kColorFinder.colorTargetValue = "Red";
 
 		//Used to regulate the speed of the drive train
 		speedDrop = 1.0;
@@ -222,10 +181,10 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-		tedFerdenan();
+		teleOpControl();
 	}
 
-	public void tedFerdenan() {
+	public void teleOpControl() {
 		//Prints the encoder reading
 		//System.out.println("Encoder: " + encoder.getDistance());
 		Scheduler.getInstance().run();
@@ -239,44 +198,17 @@ public class Robot extends TimedRobot {
 		else {
 			//Runs manual controls
 			if (primaryCamActive) {
-				//driveL.set(m_oi.GetRightY());
-				driveL.set(m_oi.GetLeftY());
-				driveR.set(m_oi.GetLeftY());
-
+				Drive.driveTank(m_oi.GetLeftY(), m_oi.GetRightY());
 			}
 			else {
-				driveL.set(m_oi.GetLeftY());
-				//driveR.set(m_oi.GetRightY());
-				driveR.set(m_oi.GetLeftY());
+				Drive.driveTankInverted(m_oi.GetLeftY(), m_oi.GetRightY());
 			}
 		}
 		
 		//CPI controls
 		m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
-		
-		//Hatch controls
+		m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
 
-		//Sets the target position of the hatch
-		if (m_oi.hatchScore.get()) {
-			hatchTargetPosition = hatchScorePosition;
-		}
-		else if (m_oi.hatchTravel.get()) {
-			hatchTargetPosition = hatchHomePosition;
-		}
-		//Moves the hatch
-		if (m_oi.hatchUp.get() && !limit.get()) {
-			appendage.set(0.3);
-		}
-		//ManipY -1 = button 16
-		else if (m_oi.GetManipY() == -1.0) {
-			appendage.set(-0.7);
-		} 
-
-		//Resets the hatch encoder
-		//ManipY +1 = button 15
-		if ((m_oi.GetManipY() == 1) || limit.get())  {
-			encoder.reset();
-		}
 		
 		//Pneumatics controls
 		if (m_oi.shootHatch.get()) {

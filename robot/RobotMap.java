@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -72,11 +73,12 @@ public class RobotMap {
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	int hatchSlapper1 = 4;
 	int hatchSlapper2 = 5;
-  int lift = 7;
+  	int lift = 7;
 	
 	//Transfer the build over to here
-	public static int solenoidP1 = 0;
-	public static int solenoidP2 = 1;
+	int solenoidP1 = 0;
+	int solenoidP2 = 1;
+	public DoubleSolenoid exampleSolenoid;
 	
 	public static Encoder encDriveL;
 	public static Encoder encDriveR;
@@ -118,9 +120,10 @@ public class RobotMap {
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
 		armLift = new Victor(lift);
-		shooter1 = new CANSparkMax(shooter1Index, MotorType.kBrushless);
-		shooter2 = new CANSparkMax(shooter2Index, MotorType.kBrushless);
-    controlPanelMotor = new Talon(cpanelMotor);
+		//Initalizing these devices causes errors while they aren't attached
+		// shooter1 = new CANSparkMax(shooter1Index, MotorType.kBrushless);
+		// shooter2 = new CANSparkMax(shooter2Index, MotorType.kBrushless);
+    	controlPanelMotor = new Talon(cpanelMotor);
 		
     //Misc sensors
 		colourSensor = new ColorSensorV3(i2cPort);
@@ -140,8 +143,11 @@ public class RobotMap {
 		encDriveR = new Encoder(encDriveR1, encDriveR2);
 		encLiftCPI = new Encoder(encLiftCPI1, encLiftCPI2);
 		encLiftClimber = new Encoder(encLiftClimber1, encLiftClimber2);
-		encShooterA = shooter1.getEncoder();
-		encShooterB = shooter2.getEncoder();
+		// encShooterA = shooter1.getEncoder();
+		// encShooterB = shooter2.getEncoder();
+
+		//Solenoids
+		exampleSolenoid = new DoubleSolenoid(solenoidP1, solenoidP2);
 		
 	}
 
