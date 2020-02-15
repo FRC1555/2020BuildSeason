@@ -19,7 +19,7 @@ public class CPI extends Subsystem {
 	// here. Call these from Commands.
     public static Victor Spin = Robot.map.spinner;
     public static Victor AL = Robot.map.armLift;
-    public static ColorSensor Eye = Robot.eyeball;
+    public static ColorSensor Eye = Robot.kColorSensor;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
