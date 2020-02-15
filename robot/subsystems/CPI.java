@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
@@ -18,8 +17,8 @@ import frc.robot.Robot;
 public class CPI extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-    public static Talon Spin = Robot.map.controlPanelMotor;
-    public static Victor AL = Robot.map.armLift;
+    public static Talon Spin = Robot.map.CPISpinner;
+    //public static Victor AL = Robot.map.armLift;
     public static ColorSensor Eye = Robot.kColorSensor;
 
 	public void initDefaultCommand() {

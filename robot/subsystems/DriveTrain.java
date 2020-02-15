@@ -1,12 +1,8 @@
 package frc.robot.subsystems;
 
-import frc.robot.RobotMap;
-import frc.robot.Robot;
-
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.Robot;
 
 /**
  *
@@ -17,8 +13,8 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 
     //Declaring motors
-    public static Victor L = Robot.map.leftMotor;
-    public static Victor R = Robot.map.rightMotor;
+    public static Victor L = Robot.map.leftDrive;
+    public static Victor R = Robot.map.rightDrive;
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -27,26 +23,26 @@ public class DriveTrain extends Subsystem {
     
     //Stops the drive train
     public void stop() {
-    	Robot.map.leftMotor.stopMotor();
-        Robot.map.rightMotor.stopMotor();
+    	Robot.map.leftDrive.stopMotor();
+        Robot.map.rightDrive.stopMotor();
     }
     
     //Drives the robot with two separate powers for the wheels
     public void driveTank(double Lspeed, double Rspeed) {
-    	Robot.map.leftMotor.set(-Lspeed);
-    	Robot.map.rightMotor.set(Rspeed);
+    	Robot.map.leftDrive.set(-Lspeed);
+    	Robot.map.rightDrive.set(Rspeed);
     }
 
     //Drives the robot as if the front were the back
     public void driveTankInverted(double Lspeed, double Rspeed) {
-    	Robot.map.leftMotor.set(Rspeed);
-    	Robot.map.rightMotor.set(-Lspeed);
+    	Robot.map.leftDrive.set(Rspeed);
+    	Robot.map.rightDrive.set(-Lspeed);
     }
     
     //Drives straight
     public void driveStraight(double speed) {
-    	Robot.map.leftMotor.set(-speed);
-    	Robot.map.rightMotor.set(speed);
+    	Robot.map.leftDrive.set(-speed);
+    	Robot.map.rightDrive.set(speed);
     }
     
     //Function pending

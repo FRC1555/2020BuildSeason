@@ -7,14 +7,12 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.Talon;
-
 import com.revrobotics.CANEncoder;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
 /**
