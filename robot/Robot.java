@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ColorFinder;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RotationControl;
 import frc.robot.commands.SeekVisionTarget;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.DriveTrain;
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
 	Encoder encoder;
 
 	//Declaring subsystems
-  public static final RobotMap map
+  	public static final RobotMap map
 	= new RobotMap();		//Maps the robot
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();	//The only reason we keep this is because the ExampleSubsytem class will give errors without it
@@ -67,7 +68,7 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	 public static final NavX kNavX
+	public static final NavX kNavX
 	= new NavX();
 
 	//Declaring commands
@@ -77,6 +78,8 @@ public class Robot extends TimedRobot {
 	= new SeekVisionTarget();
 	public static ColorFinder kColorFinder
 	= new ColorFinder();
+	public static RotationControl kRotationControl
+	= new RotationControl();
 	
 	//Doubles for the motor target positions
 	public static double liftTargetPosition;
@@ -227,8 +230,6 @@ public class Robot extends TimedRobot {
 		//System.out.println("Encoder: " + encoder.getDistance());
 		Scheduler.getInstance().run();
 		//Drive controls
-		//System.out.println(m_oi.leftButtons[1].get());
-		System.out.println("NavX angle: " + kNavX.heading());
 		
 		//Checks to see if left button one is pressed
 		if (m_oi.leftButtons[1].get()) {
@@ -251,7 +252,7 @@ public class Robot extends TimedRobot {
 		}
 		
 		//CPI controls
-		m_oi.leftButtons[10].toggleWhenPressed(kColorFinder);
+		m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
 		
 		//Hatch controls
 

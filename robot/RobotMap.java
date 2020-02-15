@@ -54,7 +54,6 @@ public class RobotMap {
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	public static int hatchSlapper1 = 4;
 	public static int hatchSlapper2 = 5;
-	public static int spin = 6;
 	public static int lift = 7;
 	public static int shoot = 8;
 
@@ -94,8 +93,7 @@ public class RobotMap {
 		liftMotor = new Talon(intakeLift);
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
-    controlPanelMotor = new Talon(cpanelMotor);
-    spinner = new Victor(spin);
+    	controlPanelMotor = new Talon(cpanelMotor);
 		armLift = new Victor(lift);
 		shooter = new Victor(shoot);
 		colourSensor = new ColorSensorV3(i2cPort);
