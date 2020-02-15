@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.util.Color;
@@ -44,7 +43,7 @@ public class ColorSensor extends Subsystem {
     }
     //gives the red value detected from the color sensor
     public int blue(){
-            return map.colourSensor.getBlue();
+        return map.colourSensor.getBlue();
     }
     //gives the red value detected from the color sensor
     public double ir(){
@@ -87,4 +86,24 @@ public class ColorSensor extends Subsystem {
         }
         return colorString;
     }
+
+    public String nextColorCounterClockwise(String currentColor) {
+		switch (currentColor) {
+			case "Green": return "Blue";
+			case "Blue": return "Yellow";
+			case "Yellow": return "Red";
+			case "Red": return "Green";
+			default: return "Unknown";
+		}
+	}
+
+	public String nextColorClockwise(String currentColor) {
+		switch (currentColor) {
+			case "Green": return "Red";
+			case "Red": return "Yellow";
+			case "Yellow": return "Blue";
+			case "Blue": return "Green";
+			default: return "Unknown";
+		}
+	}
 }
