@@ -7,11 +7,14 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Encoder;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
@@ -20,6 +23,7 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
+import edu.wpi.first.wpilibj.SPI;
 
 
 
@@ -63,6 +67,9 @@ public class RobotMap {
 	public static Talon liftMotor;
 	int intake = 2;
 	int intakeLift = 3;
+	public static Talon controlPanelMotor;
+	public static int cpanelMotor = 6;
+
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	int hatchSlapper1 = 4;
 	int hatchSlapper2 = 5;
@@ -92,10 +99,12 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
-	public ColorSensorV3 colourSensor;
+	public static ColorSensorV3 colourSensor;
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
 	public static ColorMatch colourMatch;
+
+	public static AHRS ahrs;
 
 	//Initalizes all the hardware
 	public void mapAll() {
@@ -108,9 +117,19 @@ public class RobotMap {
 		slapMotor = new Talon(hatchSlapper2);
 		shooter1 = new CANSparkMax(shooter1Index, MotorType.kBrushless);
 		shooter2 = new CANSparkMax(shooter2Index, MotorType.kBrushless);
+    controlPanelMotor = new Talon(cpanelMotor);
 		//Misc sensors
 		colourSensor = new ColorSensorV3(i2cPort);
 		colourMatch = new ColorMatch();
+    try {
+			/* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
+			/* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
+			/* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
+			ahrs = new AHRS(SPI.Port.kMXP); 
+		} catch (RuntimeException ex ) {
+			DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
+		}
+
 		//Encoders
 		encDriveL = new Encoder(encDriveL1, encDriveL2);
 		encDriveR = new Encoder(encDriveR1, encDriveR2);
@@ -118,6 +137,7 @@ public class RobotMap {
 		encLiftClimber = new Encoder(encLiftClimber1, encLiftClimber2);
 		encShooterA = shooter1.getEncoder();
 		encShooterB = shooter2.getEncoder();
+		
 	}
 
 	public ColorMatchResult matchClosestColor(Object detectedColor) {
