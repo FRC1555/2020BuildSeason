@@ -80,7 +80,6 @@ public class RobotMap {
 
 	public static AHRS ahrs;
   
-	public static Victor spinner;
 	public static Victor armLift;
 	public static Victor shooter;
 
