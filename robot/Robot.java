@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
 		appendage = map.intakeMotor;
 
 		limit = new DigitalInput(0);
-		encoder = new Encoder(9, 8);
+		//encoder = new Encoder(9, 8);
 	    
 	  //Autonomous stuff I haven't figured out yet
 	  		//m_chooser.addDefault("Default Auto", new ExampleCommand());

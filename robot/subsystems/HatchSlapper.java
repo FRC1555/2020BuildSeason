@@ -29,13 +29,6 @@ public class HatchSlapper extends Subsystem {
 	//We plan on turning these into one entity on the program once we have more signal wire splitters
 	public static Talon HatchSlappy;
 	public static Talon SlatchHappy;
-
-	//Called during init to build the hatch slapper
-	public static void build() {
-		HatchSlappy = new Talon(RobotMap.hatchSlapper1);
-		SlatchHappy = new Talon(RobotMap.hatchSlapper2);
-
-	}
 	
 	//Used to set the power of the hatch slapper
 	public static void setPower(double speed) {
