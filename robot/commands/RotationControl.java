@@ -47,7 +47,7 @@ public class RotationControl extends Command {
 		lastColor = "Unknown";
 		Flag = true;
 		Ticks = 0;
-		spinner = Robot.map.controlPanelMotor;
+		spinner = Robot.map.CPISpinner;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -66,18 +66,10 @@ public class RotationControl extends Command {
 		Color2 = Robot.kColorSensor.RobotColorDetector();
 		
 		if (Color2 == Robot.kColorSensor.nextColorClockwise(lastColor)) {
-			// if (!Flag) {
-			// 	Ticks += 1;
-			// }
-			// Flag = true;
 			Ticks += 1;
 			lastColor = Color2;
 		}
 		System.out.println(Ticks);
-		// else {
-		// 	Flag = false;
-		// }
-		// Stop after 8 ticks have been accumulated
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

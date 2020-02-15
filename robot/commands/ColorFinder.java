@@ -42,7 +42,7 @@ public class ColorFinder extends Command {
 			return;
 		}
 
-		Robot.map.controlPanelMotor.set(0.2);
+		Robot.map.CPISpinner.set(0.2);
 		colorFound = Robot.kColorSensor.RobotColorDetector();
 		if (colorFound == Robot.kColorSensor.nextColorClockwise(lastColor)) {
 			lastColor = colorFound;
@@ -66,7 +66,7 @@ public class ColorFinder extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-        Robot.map.controlPanelMotor.set(0);
+        Robot.map.CPISpinner.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
