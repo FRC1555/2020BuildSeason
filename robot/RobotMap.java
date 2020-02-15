@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Encoder;
 
 import edu.wpi.first.wpilibj.DriverStation;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
@@ -24,8 +25,6 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.SPI;
-
-
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -73,6 +72,7 @@ public class RobotMap {
 	//The hatch panel grabbers are currently run off two ports, although we should be able to change it to one in the future
 	int hatchSlapper1 = 4;
 	int hatchSlapper2 = 5;
+  int lift = 7;
 	
 	//Transfer the build over to here
 	public static int solenoidP1 = 0;
@@ -99,12 +99,14 @@ public class RobotMap {
 	public static Talon hatchMotor;
 	public static Talon slapMotor;
 
-	public static ColorSensorV3 colourSensor;
+	public ColorSensorV3 colourSensor;
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
 	public static ColorMatch colourMatch;
 
 	public static AHRS ahrs;
+  
+	public static Victor armLift;
 
 	//Initalizes all the hardware
 	public void mapAll() {
@@ -115,13 +117,16 @@ public class RobotMap {
 		liftMotor = new Talon(intakeLift);
 		hatchMotor = new Talon(hatchSlapper1);
 		slapMotor = new Talon(hatchSlapper2);
+		armLift = new Victor(lift);
 		shooter1 = new CANSparkMax(shooter1Index, MotorType.kBrushless);
 		shooter2 = new CANSparkMax(shooter2Index, MotorType.kBrushless);
     controlPanelMotor = new Talon(cpanelMotor);
-		//Misc sensors
+		
+    //Misc sensors
 		colourSensor = new ColorSensorV3(i2cPort);
 		colourMatch = new ColorMatch();
     try {
+
 			/* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
 			/* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
 			/* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
