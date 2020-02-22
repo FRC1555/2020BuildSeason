@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
+//import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
@@ -23,8 +23,8 @@ public class encoder extends Subsystem {
 	// here. Call these from Commands.
 
 
-	public static CANEncoder encShooterA = Robot.map.encShooterA;
-	public static CANEncoder encShooterB = Robot.map.encShooterB;
+	// public static CANEncoder encShooterA = Robot.map.encShooterA;
+	// public static CANEncoder encShooterB = Robot.map.encShooterB;
 	public static Encoder encDriveL = Robot.map.encDriveL;
 	public static Encoder encDriveR = Robot.map.encDriveR;
 	public static Encoder encLiftCPI = Robot.map.encLiftCPI;
@@ -99,11 +99,11 @@ public class encoder extends Subsystem {
 		return out;
 	}
 	//Alternate version for the CANEncoders used by the NEOs
-	public double encoderCount(CANEncoder enc) {
-		double out = enc.getPosition();
-		System.out.println(out);
-		return out;
-	}
+	// public double encoderCount(CANEncoder enc) {
+	// 	double out = enc.getPosition();
+	// 	System.out.println(out);
+	// 	return out;
+	// }
 
 	//Raw Count - The count without compensation for decoding scale factor
 	public double encoderDistance(Encoder enc) {
@@ -117,9 +117,9 @@ public class encoder extends Subsystem {
 		return enc.getRate();
 	}
 
-	public double encoderRate(CANEncoder enc) {
-		return enc.getVelocity();
-	}
+	// public double encoderRate(CANEncoder enc) {
+	// 	return enc.getVelocity();
+	// }
 
 	//Direction - The direction of the last value change (true for Up, false for Down)
 	public boolean encoderDirection(Encoder enc) {

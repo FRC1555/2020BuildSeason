@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
@@ -19,8 +20,7 @@ public class Shooter extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	// TODO: edit this reference to the SparkMAXs
-	public CANSparkMax shoot1;
-	public CANSparkMax shoot2;
+	public Victor Shooter;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -28,19 +28,18 @@ public class Shooter extends Subsystem {
 	}
 	
 	public void init() {
-		shoot1 = Robot.map.shooter1;
-		shoot2 = Robot.map.shooter2;
+		// shoot1 = Robot.map.shooter1;
+		// shoot2 = Robot.map.shooter2;
+		Shooter = Robot.map.Shooter;
 	}
 
 	//It is assumed that the motors will spin in opposite directions
 	//Therefore, we will always activate them using this method
 	public void shooterPower(double power) {
-		shoot1.set(power);
-		shoot2.set(-power);
+		Shooter.set(power);
 	}
-
 	public void shoot() {
-		shooterPower(1);
+		shooterPower(0.1);
 	}
     public void Stop() {
 		shooterPower(0);
