@@ -8,11 +8,12 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANEncoder;
+// import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
@@ -39,8 +40,8 @@ public class RobotMap {
 	// public static int rangefinderModule = 1;
 	
 	//Declaring the motor controllers
-	public CANSparkMax shooter1;
-	public CANSparkMax shooter2;
+	// public CANSparkMax shooter1;
+	// public CANSparkMax shooter2;
 	public Victor leftDrive;
 	public Victor rightDrive;
 	public Victor shooterLift;
@@ -48,6 +49,7 @@ public class RobotMap {
 	public Victor balancer;
 	public Victor CPILift;
 	public Talon CPISpinner;
+	public Victor Shooter;
 
 	//Declaring the indexes of the motor controllers
 	//The shooters are part of the CAN bus, which puts them on a separate index list
@@ -60,15 +62,16 @@ public class RobotMap {
 	int balancerIndex = 4;
 	int CPILiftIndex = 5;
 	int CPISpinnerIndex = 6;
+	int ShooterIndex = 7;
 
 	//Declaring the solenoids and their indexes
 	public DoubleSolenoid exampleSolenoid;
-	int solenoidP1 = 0;
-	int solenoidP2 = 1;
+	// int solenoidP1 = 0;
+	// int solenoidP2 = 1;
 	
 	//Declaring encoders
-	public CANEncoder encShooterA;
-	public CANEncoder encShooterB;
+	// public CANEncoder encShooterA;
+	// public CANEncoder encShooterB;
 	public Encoder encDriveL;
 	public Encoder encDriveR;
 	public Encoder encLiftCPI;
@@ -95,6 +98,18 @@ public class RobotMap {
 	private final I2C.Port i2cPort = I2C.Port.kOnboard;
 	public ColorMatch colourMatch;
 
+	//limit switches
+	public DigitalInput lswitchbotright;
+	public DigitalInput lswitchbotleft;
+	public DigitalInput lswitchtopright;
+	public DigitalInput lswitchtopleft;
+
+	int lswitchbotrightIndex = 0;
+	int lswitchbotleftIndex = 1;
+	int lswitchtoprightIndex = 2; 
+	int lswitchtopleftIndex = 3;
+
+
 	//Declaring the navX
 	public AHRS ahrs;
   
@@ -110,7 +125,8 @@ public class RobotMap {
 		climber = new Victor(climberIndex);
 		balancer = new Victor(balancerIndex);
 		CPILift = new Victor(CPILiftIndex);
-    	CPISpinner = new Talon(CPISpinnerIndex);
+		CPISpinner = new Talon(CPISpinnerIndex);
+		Shooter = new Victor(ShooterIndex);
 		
     	//Misc sensors
 		colourSensor = new ColorSensorV3(i2cPort);
@@ -125,17 +141,22 @@ public class RobotMap {
 		catch (RuntimeException ex) {
 			DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
 		}
+		lswitchbotright = new DigitalInput(lswitchbotrightIndex);
+		lswitchbotleft = new DigitalInput(lswitchbotleftIndex);
+		lswitchtopright = new DigitalInput(lswitchtoprightIndex);
+		lswitchtopleft = new DigitalInput(lswitchtopleftIndex);
+
 
 		//Encoders
-		encDriveL = new Encoder(encDriveL1, encDriveL2);
-		encDriveR = new Encoder(encDriveR1, encDriveR2);
-		encLiftCPI = new Encoder(encLiftCPI1, encLiftCPI2);
-		encLiftClimber = new Encoder(encLiftClimber1, encLiftClimber2);
+		// encDriveL = new Encoder(encDriveL1, encDriveL2);
+		// encDriveR = new Encoder(encDriveR1, encDriveR2);
+		// encLiftCPI = new Encoder(encLiftCPI1, encLiftCPI2);
+		// encLiftClimber = new Encoder(encLiftClimber1, encLiftClimber2);
 		// encShooterA = shooter1.getEncoder();
 		// encShooterB = shooter2.getEncoder();
 
 		//Solenoids
-		exampleSolenoid = new DoubleSolenoid(solenoidP1, solenoidP2);
+		// exampleSolenoid = new DoubleSolenoid(solenoidP1, solenoidP2);
 		
 	}
 

@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -26,15 +24,15 @@ public class OI {
 	
 	//Three Arrays of joystick buttons, one for each of the the sticks. The first element in each array is null so that when mapping the buttons in the code
 	//the button number in the code is the same as the one on the physical joystick
-	static Button[] leftButtons = {null, new JoystickButton(leftStick, 1), new JoystickButton(leftStick, 2),
+	Button[] leftButtons = {null, new JoystickButton(leftStick, 1), new JoystickButton(leftStick, 2),
 			new JoystickButton(leftStick, 3), new JoystickButton(leftStick, 4), new JoystickButton(leftStick, 5), new JoystickButton(leftStick, 6), 
 			new JoystickButton(leftStick, 7), new JoystickButton(leftStick, 8), new JoystickButton(leftStick, 9), new JoystickButton(leftStick, 10)};
 	
-	static Button[] rightButtons = {null, new JoystickButton(rightStick, 1), new JoystickButton(rightStick, 2),
+	Button[] rightButtons = {null, new JoystickButton(rightStick, 1), new JoystickButton(rightStick, 2),
 			new JoystickButton(rightStick, 3), new JoystickButton(rightStick, 4), new JoystickButton(rightStick, 5), new JoystickButton(rightStick, 6),
 			new JoystickButton(rightStick, 7), new JoystickButton(rightStick, 8), new JoystickButton(rightStick, 9), new JoystickButton(rightStick, 10)};
 	
-	static Button[] manipButtons = {null, new JoystickButton(manipulator, 1), new JoystickButton(manipulator, 2), new JoystickButton(manipulator, 3), 
+	Button[] manipButtons = {null, new JoystickButton(manipulator, 1), new JoystickButton(manipulator, 2), new JoystickButton(manipulator, 3), 
 			new JoystickButton(manipulator, 4), new JoystickButton(manipulator, 5), new JoystickButton(manipulator, 6), new JoystickButton(manipulator, 7),
 			new JoystickButton(manipulator, 8), new JoystickButton(manipulator, 9), new JoystickButton(manipulator, 10), new JoystickButton(manipulator, 11), new JoystickButton(manipulator, 12)};
 	
@@ -43,7 +41,7 @@ public class OI {
 		return leftStick.getX();
 	}
 		
-	public static double GetLeftY() {
+	public double GetLeftY() {
 		return leftStick.getY();
 	}
 		
@@ -55,7 +53,7 @@ public class OI {
 		return rightStick.getX();
 	}
 		
-	public static double GetRightY() {
+	public double GetRightY() {
 		return rightStick.getY();
 	}
 		
@@ -75,26 +73,26 @@ public class OI {
 		return manipulator.getZ();
 	}
 	//Map for the buttons
-	static Button shootBall = manipButtons[1];
-	static Button intake = manipButtons[5];
+	Button shootBall = manipButtons[1];
+	Button intake = manipButtons[5];
 
-	static Button liftScore = manipButtons[2];
-	static Button liftCollect = manipButtons[6];
-	static Button liftTravel = manipButtons[10];
+	Button liftScore = manipButtons[2];
+	Button liftCollect = manipButtons[6];
+	Button liftTravel = manipButtons[10];
 	//Use manipX +1 value for lift encoder reset
-	static Button liftUp = manipButtons[9];
+	Button liftUp = manipButtons[9];
 	//Use manipX -1 value for liftDown
 
-	static Button hatchScore = manipButtons[3];
-	static Button hatchClimb = manipButtons[7];
-	static Button hatchTravel = manipButtons[11];
+	Button hatchScore = manipButtons[3];
+	Button hatchClimb = manipButtons[7];
+	Button hatchTravel = manipButtons[11];
 	//Use manipY +1 value for hatch encoder reset
-	static Button hatchUp = manipButtons[12];
+	Button hatchUp = manipButtons[12];
 	//Use manipY -1 value for hatchDown
 
-	static Button shootHatch = manipButtons[4];
+	Button shootHatch = manipButtons[4];
 
-	static Button climbPiston = manipButtons[8];
+	Button climbPiston = manipButtons[8];
 	
 	
 	
