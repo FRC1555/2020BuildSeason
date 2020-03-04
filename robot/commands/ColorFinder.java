@@ -7,12 +7,9 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.ColorMatchResult;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -49,6 +46,7 @@ public class ColorFinder extends Command {
 		}
 		System.out.println("Searching for " + colorTargetValue);
 		System.out.println("Currently veiwing " + colorFound);
+		SmartDashboard.putString("Detected Color: ", colorFound);
 
 	}
 

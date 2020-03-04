@@ -8,15 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
-import frc.robot.subsystems.ColorSensor;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /**
  * An example command.  You can replace me with your own command.
