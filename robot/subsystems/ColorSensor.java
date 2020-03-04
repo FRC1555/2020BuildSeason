@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -29,7 +30,8 @@ public class ColorSensor extends Subsystem {
     public final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-	public void initDefaultCommand() {
+    
+    public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
     }
@@ -105,5 +107,8 @@ public class ColorSensor extends Subsystem {
 			case "Blue": return "Green";
 			default: return "Unknown";
 		}
-	}
+    }
+    
+    
+    
 }
