@@ -33,11 +33,13 @@ public class Robot extends TimedRobot {
 	public static final OI m_oi
 	= new OI();		//Object Interface. This creates the controllers
     public static final DriveTrain Drive
-    = new DriveTrain();		//The drive train for the robot. Includes all the methods for driving the robot
+	= new DriveTrain();		//The drive train for the robot. Includes all the methods for driving the robot
+	public static final Shooter kShooter
+	= new Shooter();
     public static final limelight kLimelight
     = new limelight();		//The vision tracking classes require this to be used
-    public static final pneumatics kPneumatics
-    = new pneumatics();		//Pneumatic controls
+    // public static final pneumatics kPneumatics
+    // = new pneumatics();		//Pneumatic controls
 	public static final encoder encode 
 	= new encoder();	//Controls all the encoders
     public static final Timer time
@@ -50,8 +52,8 @@ public class Robot extends TimedRobot {
 	= new SeekVisionTarget();
 	public static ColorFinder kColorFinder
 	= new ColorFinder();
-	public static RotationControl kRotationControl
-	= new RotationControl();
+	// public static RotationControl kRotationControl
+	// = new RotationControl();
 
 	double speedDrop;
 
@@ -74,6 +76,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		//Mapping all the hardware
 		map.mapAll();
+		kShooter.init();
 
 		//limit = new DigitalInput(0);
 		//encoder = new Encoder(9, 8);
@@ -84,9 +87,9 @@ public class Robot extends TimedRobot {
 	  		SmartDashboard.putData("Auto mode", m_chooser);
 	  		
 	  		//Prepares the pneumatics
-	  		kPneumatics.clearStickyFault();
-	  		kPneumatics.solenoidOff();
-	  		kPneumatics.compressorOn();
+	  		// kPneumatics.clearStickyFault();
+	  		// kPneumatics.solenoidOff();
+	  		// kPneumatics.compressorOn();
 	  		
 			primaryCamActive = true;
 		kColorSensor.robotColorValues();
@@ -177,43 +180,53 @@ public class Robot extends TimedRobot {
 		//Drive controls
 		
 		//Checks to see if left button one is pressed
-		if (m_oi.leftButtons[1].get()) {
+		if (m_oi.leftButtons[10].get()) {
 			//Runs vision seeking controls
-			m_oi.leftButtons[1].whileHeld(kSeekVisionTarget);
+			m_oi.leftButtons[10].whileHeld(kSeekVisionTarget);
 		}
 		else {
 			//Runs manual controls
-			if (primaryCamActive) {
-				Drive.driveTank(m_oi.GetLeftY(), m_oi.GetRightY());
-			}
-			else {
-				Drive.driveTankInverted(m_oi.GetLeftY(), m_oi.GetRightY());
-			}
+			Drive.driveTank(m_oi.GetLeftY()*0.3, m_oi.GetRightY()*0.3);
 		}
-		
+
+		//This controls the intake arm of the robot
+		//find out the directions of the motor before you test the buttons on the robot
+		if(m_oi.rightButtons[2].get() && map.lswitchTop.get()){
+			map.shooterLift.set(0.3);
+		}
+		else if(m_oi.rightButtons[3].get() && map.lswitchBottom.get()){
+			map.shooterLift.set(-0.1);
+		}
+		else{
+			map.shooterLift.set(0);
+		}
+
+		//shooter controls
+		if(m_oi.rightButtons[1].get()) {
+			kShooter.shoot();
+		}
+		else if(m_oi.leftButtons[1].get()){
+			kShooter.intake();
+		}
+		else{
+			kShooter.Stop();
+		}
+
+		//Climber controls
+		if(m_oi.rightButtons[8].get()){
+			map.climber.set(0.5);
+		} 
+		else{
+			map.climber.set(0);
+		}
+
 		//CPI controls
-		m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
+		//m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
 		m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
 
 		
-		//Pneumatics controls
-		if (m_oi.shootHatch.get()) {
-			kPneumatics.extend();
-		}
-		else {
-			kPneumatics.retract();
-		}
-		
-		//Camera controls
-		if (m_oi.leftButtons[2].get()) {
-			kLimelight.setStreamPrimary();
-			primaryCamActive = true;
-			kLimelight.setPipe(1);
-		}
-		if (m_oi.rightButtons[2].get()) {
-			kLimelight.setStreamSecondary();
-			primaryCamActive = false;
-		}
+		SmartDashboard.putBoolean("limit switch top:", map.lswitchTop.get());
+		SmartDashboard.putBoolean("limit switch bottom:", map.lswitchBottom.get());
 
 	}
 
