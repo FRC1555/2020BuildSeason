@@ -23,80 +23,54 @@ public class OI {
 	static Joystick leftStick = new Joystick(1);
 	static Joystick rightStick = new Joystick(0);
 	static Joystick manipulator = new Joystick(2);
-	
-	//Three Arrays of joystick buttons, one for each of the the sticks. The first element in each array is null so that when mapping the buttons in the code
-	//the button number in the code is the same as the one on the physical joystick
-	static Button[] leftButtons = {null, new JoystickButton(leftStick, 1), new JoystickButton(leftStick, 2),
-			new JoystickButton(leftStick, 3), new JoystickButton(leftStick, 4), new JoystickButton(leftStick, 5), new JoystickButton(leftStick, 6), 
-			new JoystickButton(leftStick, 7), new JoystickButton(leftStick, 8), new JoystickButton(leftStick, 9), new JoystickButton(leftStick, 10)};
-	
-	static Button[] rightButtons = {null, new JoystickButton(rightStick, 1), new JoystickButton(rightStick, 2),
-			new JoystickButton(rightStick, 3), new JoystickButton(rightStick, 4), new JoystickButton(rightStick, 5), new JoystickButton(rightStick, 6),
-			new JoystickButton(rightStick, 7), new JoystickButton(rightStick, 8), new JoystickButton(rightStick, 9), new JoystickButton(rightStick, 10)};
-	
-	static Button[] manipButtons = {null, new JoystickButton(manipulator, 1), new JoystickButton(manipulator, 2), new JoystickButton(manipulator, 3), 
-			new JoystickButton(manipulator, 4), new JoystickButton(manipulator, 5), new JoystickButton(manipulator, 6), new JoystickButton(manipulator, 7),
-			new JoystickButton(manipulator, 8), new JoystickButton(manipulator, 9), new JoystickButton(manipulator, 10), new JoystickButton(manipulator, 11), new JoystickButton(manipulator, 12)};
-	
-	//Methods for returning values of stick controls
-	public static double GetLeftX() {
-		return leftStick.getX();
-	}
-		
-	public static double GetLeftY() {
-		return leftStick.getY();
-	}
-		
-	public static double GetLeftZ() {
-		return leftStick.getZ();
-	}
-		
-	public static double GetRightX() {
-		return rightStick.getX();
-	}
-		
-	public static double GetRightY() {
-		return rightStick.getY();
-	}
-		
-	public static double GetRightZ() {
-		return rightStick.getZ();
-	}
-	
-	public static double GetManipX() {
-		return manipulator.getX();
-	}
-	
-	public static double GetManipY() {
-		return manipulator.getY();
-	}
-	
-	public static double GetManipZ() {
-		return manipulator.getZ();
-	}
-	//Map for the buttons
-	static Button shootBall = manipButtons[1];
-	static Button intake = manipButtons[5];
 
-	static Button liftScore = manipButtons[2];
-	static Button liftCollect = manipButtons[6];
-	static Button liftTravel = manipButtons[10];
-	//Use manipX +1 value for lift encoder reset
-	static Button liftUp = manipButtons[9];
-	//Use manipX -1 value for liftDown
+	static Joystick driveController = new Joystick(0);
+	static Joystick manipController = new Joystick(1);
 
-	static Button hatchScore = manipButtons[3];
-	static Button hatchClimb = manipButtons[7];
-	static Button hatchTravel = manipButtons[11];
-	//Use manipY +1 value for hatch encoder reset
-	static Button hatchUp = manipButtons[12];
-	//Use manipY -1 value for hatchDown
-
-	static Button shootHatch = manipButtons[4];
-
-	static Button climbPiston = manipButtons[8];
+	public static final class manipButtons {
+		public static final Button a = new JoystickButton(manipController, 1);
+		public static final Button b = new JoystickButton(manipController, 2);
+		public static final Button x = new JoystickButton(manipController, 3);
+		public static final Button y = new JoystickButton(manipController, 4);
+		public static final Button lb = new JoystickButton(manipController, 5);
+		public static final Button rb = new JoystickButton(manipController, 6);
+		public static final Button start = new JoystickButton(manipController, 7);
+		public static final Button select = new JoystickButton(manipController, 8);
+		public static final Button leftStickButton = new JoystickButton(manipController, 9);
+		public static final Button rightStickButton = new JoystickButton(manipController, 10);
+	}
 	
-	
+	public static final class driveButtons {
+		public static final Button a = new JoystickButton(driveController, 1);
+		public static final Button b = new JoystickButton(driveController, 2);
+		public static final Button x = new JoystickButton(driveController, 3);
+		public static final Button y = new JoystickButton(driveController, 4);
+		public static final Button lb = new JoystickButton(driveController, 5);
+		public static final Button rb = new JoystickButton(driveController, 6);
+		public static final Button start = new JoystickButton(driveController, 7);
+		public static final Button select = new JoystickButton(driveController, 8);
+		public static final Button leftStickButton = new JoystickButton(driveController, 9);
+		public static final Button rightStickButton = new JoystickButton(driveController, 10);
+	}
+
+	public static double getLeftX(Joystick stick) {
+		return stick.getRawAxis(0);
+	}
+	public static double getLeftY(Joystick stick) {
+		return stick.getRawAxis(1);
+	}
+	public static double getRightX(Joystick stick) {
+		return stick.getRawAxis(4);
+	}
+	public static double getRightY(Joystick stick) {
+		return stick.getRawAxis(5);
+	}
+	public static double getLeftTrigger(Joystick stick) {
+		return stick.getRawAxis(2);
+	}
+	public static double getRightTrigger(Joystick stick) {
+		return stick.getRawAxis(3);
+	}
 	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
