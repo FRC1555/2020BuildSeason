@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI.driveButtons;
+import frc.robot.OI.manipButtons;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -44,8 +46,10 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	// public static final NavX kNavX
-	// = new NavX();
+	public static final NavX kNavX
+	= new NavX();
+	public static final Lidar kLidar
+	= new Lidar();
 
 	//Declaring commands
 	public static SeekVisionTarget kSeekVisionTarget
@@ -180,21 +184,21 @@ public class Robot extends TimedRobot {
 		//Drive controls
 		
 		//Checks to see if left button one is pressed
-		if (m_oi.leftButtons[10].get()) {
+		if (manipButtons.y.get()) {
 			//Runs vision seeking controls
-			m_oi.leftButtons[10].whileHeld(kSeekVisionTarget);
+			manipButtons.y.whileHeld(kSeekVisionTarget);
 		}
 		else {
 			//Runs manual controls
-			Drive.driveTank(m_oi.GetLeftY()*0.3, m_oi.GetRightY()*0.3);
+			Drive.driveTank(m_oi.getLeftY(m_oi.driveController)*0.3, m_oi.getRightY(m_oi.driveController)*0.3);
 		}
 
 		//This controls the intake arm of the robot
 		//find out the directions of the motor before you test the buttons on the robot
-		if(m_oi.rightButtons[2].get() && map.lswitchTop.get()){
+		if(driveButtons.a.get() && map.lswitchTop.get()){
 			map.shooterLift.set(0.3);
 		}
-		else if(m_oi.rightButtons[3].get() && map.lswitchBottom.get()){
+		else if(driveButtons.y.get() && map.lswitchBottom.get()){
 			map.shooterLift.set(-0.1);
 		}
 		else{
@@ -202,10 +206,10 @@ public class Robot extends TimedRobot {
 		}
 
 		//shooter controls
-		if(m_oi.rightButtons[1].get()) {
+		if(m_oi.getLeftTrigger(m_oi.driveController) > 0 ) {
 			kShooter.shoot();
 		}
-		else if(m_oi.leftButtons[1].get()){
+		else if(m_oi.getRightTrigger(m_oi.driveController) > 0 ) {
 			kShooter.intake();
 		}
 		else{
@@ -213,20 +217,25 @@ public class Robot extends TimedRobot {
 		}
 
 		//Climber controls
-		if(m_oi.rightButtons[8].get()){
-			map.climber.set(0.5);
+		//Forwards
+		if(driveButtons.y.get()){
+			map.climber.set(-0.5);
 		} 
+		//Reverse
+		else if(manipButtons.x.get()) {
+			map.climber.set(0.5);
+		}
 		else{
 			map.climber.set(0);
 		}
 
 		//CPI controls
 		//m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
-		m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
-
+		//m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
 		
 		SmartDashboard.putBoolean("limit switch top:", map.lswitchTop.get());
 		SmartDashboard.putBoolean("limit switch bottom:", map.lswitchBottom.get());
+		SmartDashboard.putNumber("Lidar:", kLidar.getDistanceIn(false));
 
 	}
 
