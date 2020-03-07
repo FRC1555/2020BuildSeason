@@ -218,7 +218,7 @@ public class Robot extends TimedRobot {
 
 		//Climber controls
 		//Forwards
-		if(driveButtons.y.get()){
+		if(driveButtons.x.get()){
 			map.climber.set(-0.5);
 		} 
 		//Reverse
