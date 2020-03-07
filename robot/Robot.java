@@ -44,8 +44,10 @@ public class Robot extends TimedRobot {
 	= new encoder();	//Controls all the encoders
     public static final Timer time
 	= new Timer();		//Used for keeping track of time
-	// public static final NavX kNavX
-	// = new NavX();
+	public static final NavX kNavX
+	= new NavX();
+	public static final Lidar kLidar
+	= new Lidar();
 
 	//Declaring commands
 	public static SeekVisionTarget kSeekVisionTarget
@@ -222,11 +224,11 @@ public class Robot extends TimedRobot {
 
 		//CPI controls
 		//m_oi.leftButtons[10].toggleWhenPressed(kRotationControl);
-		m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
-
+		//m_oi.leftButtons[9].toggleWhenPressed(kColorFinder);
 		
 		SmartDashboard.putBoolean("limit switch top:", map.lswitchTop.get());
 		SmartDashboard.putBoolean("limit switch bottom:", map.lswitchBottom.get());
+		SmartDashboard.putNumber("Lidar:", kLidar.getDistanceIn(false));
 
 	}
 
