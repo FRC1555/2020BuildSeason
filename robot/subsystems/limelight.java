@@ -32,19 +32,19 @@ public class limelight extends Subsystem {
 		
 	}
 	
-	public static double getLimeX() {
+	public double getLimeX() {
 		return tx.getDouble(0);
 	}
 	
-	public static double getLimeY() {
+	public double getLimeY() {
 		return ty.getDouble(0);
 	}
 
-	public static double getLimeA() {
+	public double getLimeA() {
 		return ta.getDouble(0);
 	}
 	
-	public static boolean targetVisible() {
+	public boolean targetVisible() {
 		if (tv.getDouble(0) == 1) {
 			return true;
 		}
@@ -58,53 +58,53 @@ public class limelight extends Subsystem {
 	h2 is the distance from the ground to the camera
 	a is the angle measurement for the camera */
 	
-	public static double distanceByTrig(double H1, double H2, double A) {
+	public double distanceByTrig(double H1, double H2, double A) {
 		double d;
 		d=(H1-H2)/Math.tan(A);
 		return d;
 	}
 	
-	public static double distanceByArea() {
+	public double distanceByArea() {
 		return areaConstant/Math.sqrt(getLimeA());
 	}
 	
-	public static void ledDefault() {
+	public void ledDefault() {
 		led.setNumber(0);
 	}
 	
-	public static void ledOn() {
+	public void ledOn() {
 		led.setNumber(3);
 	}
 	
-	public static void ledOff() {
+	public void ledOff() {
 		led.setNumber(1);
 	}
 	
-	public static void ledBlink() {
+	public void ledBlink() {
 		led.setNumber(2);
 	}
 	
-	public static void camTrack() {
+	public void camTrack() {
 		cam.setNumber(0);
 	}
 	
-	public static void camSee() {
+	public void camSee() {
 		cam.setNumber(1);
 	}
 	
-	public static void setStreamSingle() {
+	public void setStreamSingle() {
 		stream.setNumber(0);
 	}
 	
-	public static void setStreamPrimary() {
+	public void setStreamPrimary() {
 		stream.setNumber(1);
 	}
 	
-	public static void setStreamSecondary() {
+	public void setStreamSecondary() {
 		stream.setNumber(2);
 	}
 	
-	public static void setPipe(double pipeline) {
+	public void setPipe(double pipeline) {
 		pipe.setNumber(pipeline);
 	}
 }

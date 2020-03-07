@@ -7,47 +7,45 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.RobotMap;
+import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class HatchSlapper extends Subsystem {
+public class Shooter extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
+	// TODO: edit this reference to the SparkMAXs
+	public CANSparkMax shoot1;
+	public CANSparkMax shoot2;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 	}
 	
-	//This is the one time I decided to have fun naming my variables
-	//These Talons control the motors to move the hatch slapper
-	//We plan on turning these into one entity on the program once we have more signal wire splitters
-	public static Talon HatchSlappy;
-	public static Talon SlatchHappy;
-
-	//Called during init to build the hatch slapper
-	public static void build() {
-		HatchSlappy = new Talon(RobotMap.hatchSlapper1);
-		SlatchHappy = new Talon(RobotMap.hatchSlapper2);
-
+	public void init() {
+		shoot1 = Robot.map.shooter1;
+		shoot2 = Robot.map.shooter2;
 	}
-	
-	//Used to set the power of the hatch slapper
-	public static void setPower(double speed) {
-		HatchSlappy.set(speed);
-		SlatchHappy.set(speed);
 
+	//It is assumed that the motors will spin in opposite directions
+	//Therefore, we will always activate them using this method
+	public void shooterPower(double power) {
+		shoot1.set(power);
+		shoot2.set(-power);
 	}
-	
-	//Stops the hatch slapper
-	public static void stop() {
-		HatchSlappy.stopMotor();
-		SlatchHappy.stopMotor();
 
+	public void shoot() {
+		shooterPower(1);
+	}
+    public void Stop() {
+		shooterPower(0);
+	}
+    public void intake() {
+        shooterPower(-0.3);
 	}
 }

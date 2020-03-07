@@ -7,85 +7,79 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class LimelightSeek extends Command {
-	public LimelightSeek() {
+public class RotationControl extends Command {
+    //
+	String startColor; 
+	//
+	String Color2;
+
+	public String lastColor;
+
+	Talon spinner;
+		
+	//
+	boolean Flag;
+	//
+	int Ticks;
+    
+    public RotationControl() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.kLimelight);
+		requires(Robot.kColorSensor);
 	}
-	double error;
-    double steeringAdjust;
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-	error = 0;
-	steeringAdjust = 0;
+		lastColor = "Unknown";
+		Flag = true;
+		Ticks = 0;
+		spinner = Robot.map.CPISpinner;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        //Checks for a target
-		if (Robot.kLimelight.targetVisible()) {
-			
-			//Checks the error of the angle
-			error = Robot.kLimelight.getLimeX();
-			//Determines steering adjustment
-			if (error <= 10) {
-				steeringAdjust = error * 0.1;
-			}
-			else {
-				steeringAdjust = error * 0.15;
-			}
-			
-			//Drives toward the target
-			if (Robot.kLimelight.getLimeA() < 10) {
-				//Drives forward
-			 	Robot.Drive.driveTank(0.3 + (0.1*steeringAdjust), 0.3 - (0.1*steeringAdjust));
-			}
-			else if (Robot.kLimelight.getLimeA() <= 25) {
-				//Drives forward slowly
-				Robot.Drive.driveTank(0.2 + (0.1*steeringAdjust), 0.2 - (0.1*steeringAdjust));
-			}
-			else if (Robot.kLimelight.getLimeA() >= 75) {
-				//Drives backwards
-				Robot.Drive.driveTank(-0.2 + (0.1*steeringAdjust), -0.2 - (0.1*steeringAdjust));
-			}
-			else {
-				Robot.Drive.stop();
-			}
-		  
+		// Spin for 4 rotations
+        // Store the current color
+		if (lastColor == "Unknown") {
+			lastColor = Robot.kColorSensor.RobotColorDetector();
+			return;
 		}
-		
-		else {
-			if (error > 0) {
-				Robot.Drive.driveTank(0.25, -0.25);
-			}
-			else {
-				Robot.Drive.driveTank(-0.25, 0.25);
+		spinner.set(0.2);
 
-			}
-			
+		// Check for a color change
+		
+		Color2 = Robot.kColorSensor.RobotColorDetector();
+		
+		if (Color2 == Robot.kColorSensor.nextColorClockwise(lastColor)) {
+			Ticks += 1;
+			lastColor = Color2;
 		}
-		
-		
+		System.out.println(Ticks);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		if (Ticks == 32) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		spinner.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
@@ -93,4 +87,6 @@ public class LimelightSeek extends Command {
 	@Override
 	protected void interrupted() {
 	}
+
+	
 }

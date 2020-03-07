@@ -9,12 +9,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -26,11 +26,12 @@ public class ColorSensor extends Subsystem {
     //All of the k(color)Targets need to be calibrated
     public RobotMap map = Robot.map;
     private final ColorMatch colourMatch = new ColorMatch();
-    public final Color kBlueTarget = map.colourMatch.makeColor(0.143, 0.427, 0.429);
-    public final Color kGreenTarget = map.colourMatch.makeColor(0.197, 0.561, 0.240);
-    public final Color kRedTarget = map.colourMatch.makeColor(0.561, 0.232, 0.114);
-    public final Color kYellowTarget = map.colourMatch.makeColor(0.361, 0.524, 0.113);
-	public void initDefaultCommand() {
+    public final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    public final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    public final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    public final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    
+    public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
     }
@@ -44,7 +45,7 @@ public class ColorSensor extends Subsystem {
     }
     //gives the red value detected from the color sensor
     public int blue(){
-            return map.colourSensor.getBlue();
+        return map.colourSensor.getBlue();
     }
     //gives the red value detected from the color sensor
     public double ir(){
@@ -87,4 +88,27 @@ public class ColorSensor extends Subsystem {
         }
         return colorString;
     }
+
+    public String nextColorCounterClockwise(String currentColor) {
+		switch (currentColor) {
+			case "Green": return "Blue";
+			case "Blue": return "Yellow";
+			case "Yellow": return "Red";
+			case "Red": return "Green";
+			default: return "Unknown";
+		}
+	}
+
+	public String nextColorClockwise(String currentColor) {
+		switch (currentColor) {
+			case "Green": return "Red";
+			case "Red": return "Yellow";
+			case "Yellow": return "Blue";
+			case "Blue": return "Green";
+			default: return "Unknown";
+		}
+    }
+    
+    
+    
 }

@@ -11,18 +11,15 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import frc.robot.RobotMap;;
+import frc.robot.Robot;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class pneumatics extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-    
-	public RobotMap hardwareMap = new RobotMap();
-	public DoubleSolenoid solenoid = new DoubleSolenoid(hardwareMap.solenoidP1, hardwareMap.solenoidP2);
-	public DoubleSolenoid climber = new DoubleSolenoid(2, 3);
+	
+	DoubleSolenoid solenoid = Robot.map.exampleSolenoid;
 	public Compressor compressor = new Compressor();
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -30,27 +27,15 @@ public class pneumatics extends Subsystem {
 	}
 	
 	public void extend() {
-		solenoid.set(Value.kReverse);
+		Robot.map.exampleSolenoid.set(Value.kReverse);
 	}
 	
 	public void retract() {
-		solenoid.set(Value.kForward);
-	}
-
-	public void up() {
-		climber.set(Value.kReverse);
-	}
-
-	public void down() {
-		climber.set(Value.kForward);
-	}
-
-	public void off() {
-		climber.set(Value.kOff);
+		Robot.map.exampleSolenoid.set(Value.kForward);
 	}
 	
 	public void solenoidOff() {
-		solenoid.set(Value.kOff);
+		Robot.map.exampleSolenoid.set(Value.kOff);
 	}
 	
 	public void compressorOn() {
