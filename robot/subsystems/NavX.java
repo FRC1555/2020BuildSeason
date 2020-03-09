@@ -23,6 +23,10 @@ public class NavX extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
     AHRS ahrs;
+    double last_world_linear_accel_x;
+    double last_world_linear_accel_y;
+
+    final static double kCollisionThreshold_DeltaG = 0.5f;
     
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
@@ -43,9 +47,13 @@ public class NavX extends Subsystem {
         return Robot.map.ahrs.getPitch();
     }
 
-    // public float getDeltaYaw(){
-    //     return Robot.map.ahrs.
-    // }
+    public float getYaw(){
+        return Robot.map.ahrs.getYaw();
+    }
+
+    public float getRoll(){
+        return Robot.map.ahrs.getRoll();
+    }
 
     //Velocities in all three dimensions for the navx
     public double getXVelocity(){
@@ -103,5 +111,26 @@ public class NavX extends Subsystem {
         Float floatZAcceleration = Robot.map.ahrs.getRawAccelZ();
         Double doubleZAcceleration = (double) floatZAcceleration;
         return doubleZAcceleration;
+    }
+
+    //Detects collisions
+    //You must start running this method before you want to use it.
+    //Additionally, once you start running it you can't stop until you are done with it.
+    public boolean hasCrashed() {
+
+        boolean collisionDetected = false;
+          
+          double curr_world_linear_accel_x = getXAcceleration();
+          double currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
+          last_world_linear_accel_x = curr_world_linear_accel_x;
+          double curr_world_linear_accel_y = getYAcceleration();
+          double currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
+          last_world_linear_accel_y = curr_world_linear_accel_y;
+          
+          if ( ( Math.abs(currentJerkX) > kCollisionThreshold_DeltaG ) ||
+               ( Math.abs(currentJerkY) > kCollisionThreshold_DeltaG) ) {
+              collisionDetected = true;
+          }
+        return collisionDetected;
     }
 }
