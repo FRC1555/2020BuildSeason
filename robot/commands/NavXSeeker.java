@@ -89,8 +89,68 @@ public class NavXSeeker extends Command {
             Robot.Drive.driveTank(-turnSpeed, turnSpeed);
 
         }
+
+        /*
+        Matthew's suggested code layout
+        Think of this command running as something that runs in stages
+        In each stage the robot will behaves differently
+        All we need is some sort of tracker that knows what stage we are in,
+        and a logic block that can make us run the proper stage
+        Each stage would also have an exit condition: something that would trigger the next stage once satisfied
+        There's already a great piece of logic we can use for this called a switch statment
+        You can find an example of a switch statement in the nextColorClockwise function in the ColorSensor subsystem
+        It would look something like this
         
+        int stage = 1;
+        switch (stage) {
+            case 1:
+                //Stage one code
+                //Activate the SeekVisionTarget command
+                //Check to see if SeekVisionTarget finished. If it did, stage++;
+                //Finally, we need a break; statememt to end the swtich.
+                //Without it, the program will continue to run the code for ALL the following cases, despite the fact that their cases haven't
+                //Been triggered, until it encounters a break; statement.
+                break;
+            case 2:
+                //Stage two code
+                //Set a heading by adding the current heading from the navX to the angle the limelight shows we are currently at from the target
+                //we only want this to happen once, so we can immediately write stage++;
+                break;
+            case 3:
+                //Stage three code
+                //Drive at the specified heading
+                //Check to see if we've crashed. If we have, stage++;
+                break;
+            case 4:
+                //Stage 4 code
+                //Record or reset the timer object
+                stage++;
+                break;
+            case 5:
+                //Stage 5 code
+                //Run for a set ammount of time to make sure we are flat against the wall
+                //We don't want to put a delay() function here, becasue that would delay the entire robot, not just this command
+                //Check to see if the neccessary amount of time has passed. If so, stage++;
+                break;
+            case 6:
+                //Stage 6 code
+                //Record or reset the timer object
+                stage++;
+                break;
+            case 7:
+                //Stage 7 code
+                //Deposit fuel cells
+                //Again, wait a certain amount of time
+                //Check to see if the neccessary amount of time has passed. If so, stage++;
+                break;
+            default:
+                //If none of the previous conditions are true
+                //Set all motor powers to 0
+                //Make the isFinished function return true when stage == 8
+                break;
         }
+        */
+    }
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
