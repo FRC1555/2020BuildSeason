@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -48,8 +49,8 @@ public class Robot extends TimedRobot {
 	= new Timer();		//Used for keeping track of time
 	public static final NavX kNavX
 	= new NavX();
-	public static final Lidar kLidar
-	= new Lidar();
+	// public static final Lidar kLidar
+	// = new Lidar();
 
 	//Declaring commands
 	public static SeekVisionTarget kSeekVisionTarget
@@ -169,7 +170,11 @@ public class Robot extends TimedRobot {
 		kColorFinder.colorTargetValue = "Red";
 
 		//Used to regulate the speed of the drive train
-		speedDrop = 1.0;
+		speedDrop = 0.3;
+
+		//Reseting the navX
+		kNavX.resetNavx();
+		kNavX.resetDisplacement();
 	}
 	
 	@Override
@@ -190,7 +195,7 @@ public class Robot extends TimedRobot {
 		}
 		else {
 			//Runs manual controls
-			Drive.driveTank(m_oi.getLeftY(m_oi.driveController)*0.3, m_oi.getRightY(m_oi.driveController)*0.3);
+			Drive.driveTank(m_oi.getLeftY(m_oi.driveController)*speedDrop, m_oi.getRightY(m_oi.driveController)*speedDrop);
 		}
 
 		//This controls the intake arm of the robot
@@ -206,10 +211,10 @@ public class Robot extends TimedRobot {
 		}
 
 		//shooter controls
-		if(m_oi.getLeftTrigger(m_oi.driveController) > 0 ) {
+		if(m_oi.getLeftTrigger(m_oi.driveController) > 0) {
 			kShooter.shoot();
 		}
-		else if(m_oi.getRightTrigger(m_oi.driveController) > 0 ) {
+		else if(m_oi.getRightTrigger(m_oi.driveController) > 0) {
 			kShooter.intake();
 		}
 		else{
@@ -235,8 +240,24 @@ public class Robot extends TimedRobot {
 		
 		SmartDashboard.putBoolean("limit switch top:", map.lswitchTop.get());
 		SmartDashboard.putBoolean("limit switch bottom:", map.lswitchBottom.get());
-		SmartDashboard.putNumber("Lidar:", kLidar.getDistanceIn(false));
+		SmartDashboard.putNumber("Pitch:", kNavX.getIMUPitch());
+		SmartDashboard.putNumber("Yaw:", kNavX.getYaw());
+		SmartDashboard.putNumber("Roll:", kNavX.getRoll());
+		SmartDashboard.putNumber("DisplacementX:", kNavX.getXDisplacement());
+		SmartDashboard.putNumber("DisplacementY:", kNavX.getYDisplacement());
+		SmartDashboard.putNumber("DisplacementZ:", kNavX.getZDisplacement());
+		SmartDashboard.putBoolean("Collision detected: ", kNavX.hasCrashed());
+		// SmartDashboard.putNumber("Lidar:", kLidar.getDistanceIn(false));
 
+		if (driveButtons.rb.get()) {
+			m_oi.driveController.setRumble(RumbleType.kLeftRumble, 1);
+			m_oi.driveController.setRumble(RumbleType.kRightRumble, 1);
+		}
+		else {
+			m_oi.driveController.setRumble(RumbleType.kLeftRumble, 0);
+			m_oi.driveController.setRumble(RumbleType.kRightRumble, 0);
+		}
+		
 	}
 
 }
