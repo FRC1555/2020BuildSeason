@@ -12,6 +12,7 @@ import javax.swing.text.StyledEditorKit.ForegroundAction;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -20,12 +21,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	//Declaring the joysticks that will be used
-	static Joystick leftStick = new Joystick(1);
-	static Joystick rightStick = new Joystick(0);
-	static Joystick manipulator = new Joystick(2);
-
 	static Joystick driveController = new Joystick(0);
 	static Joystick manipController = new Joystick(1);
+
 
 	public static final class manipButtons {
 		public static final Button a = new JoystickButton(manipController, 1);
@@ -38,6 +36,14 @@ public class OI {
 		public static final Button select = new JoystickButton(manipController, 8);
 		public static final Button leftStickButton = new JoystickButton(manipController, 9);
 		public static final Button rightStickButton = new JoystickButton(manipController, 10);
+		public static final POVButton dPadRight = new POVButton(manipController, 270);
+		public static final POVButton dPadUpRight = new POVButton(manipController, 315);
+		public static final POVButton dPadUp = new POVButton(manipController, 0);
+		public static final POVButton dPadUpLeft = new POVButton(manipController, 45);
+		public static final POVButton dPadLeft = new POVButton(manipController, 90);
+		public static final POVButton dPadDownLeft = new POVButton(manipController, 135);
+		public static final POVButton dPadDown = new POVButton(manipController, 180);
+		public static final POVButton dPadDownRight = new POVButton(manipController, 225);
 	}
 	
 	public static final class driveButtons {
@@ -51,6 +57,14 @@ public class OI {
 		public static final Button select = new JoystickButton(driveController, 8);
 		public static final Button leftStickButton = new JoystickButton(driveController, 9);
 		public static final Button rightStickButton = new JoystickButton(driveController, 10);
+		public static final POVButton dPadRight = new POVButton(driveController, 270);
+		public static final POVButton dPadUpRight = new POVButton(driveController, 315);
+		public static final POVButton dPadUp = new POVButton(driveController, 0);
+		public static final POVButton dPadUpLeft = new POVButton(driveController, 45);
+		public static final POVButton dPadLeft = new POVButton(driveController, 90);
+		public static final POVButton dPadDownLeft = new POVButton(driveController, 135);
+		public static final POVButton dPadDown = new POVButton(driveController, 180);
+		public static final POVButton dPadDownRight = new POVButton(driveController, 225);
 	}
 
 	public static double getLeftX(Joystick stick) {
