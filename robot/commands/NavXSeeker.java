@@ -9,7 +9,9 @@ package frc.robot.commands;
 
 import org.opencv.core.Mat;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
 
@@ -42,6 +44,12 @@ public class NavXSeeker extends Command {
     //max value of steering adjust
     public final double steeringcap = 0.3;
 
+    //value for the stage when it starts running
+    public int stage = 1;
+
+    public Timer time
+    = new Timer();
+
     //sets the difference in angle to 0 if the absolute value of the angle is less than 3 degrees away from the target angle
     public final double Angletolerancethreshold = 3;
     
@@ -65,7 +73,36 @@ public class NavXSeeker extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		//This sets the last recorded Pitch(left to right turns) that the robot was at before it lost track of the target when it was using the lime light 
+        //This sets the last recorded Pitch(left to right turns) that the robot was at before it lost track of the target when it was using the lime light
+        switch(stage){
+            case 1 : 
+                Scheduler.getInstance().add(kSeekVisionTarget);
+                if(kSeekVisionTarget.reachedTargetDistance == true){
+                    stage ++;   
+                } 
+                break; 
+            case 2 :
+                lastRecorded0 = Robot.kLimelight.getLimeX() + Robot.kNavX.getYaw();
+                stage ++;
+                break;
+            case 3 :
+                Robot.Drive.driveTank(lspeed, rspeed);
+                if(Robot.kNavX.hasCrashed() == true){
+                    stage++;
+                }
+                break;
+            case 4 :
+                time.reset();
+                stage++;
+                break;
+            case 5 :
+                if(time() == 5){
+                    stage++;
+                }
+                break;
+            case 6 :
+            case 7 :
+        }
 		if(Robot.kSeekVisionTarget.reachedTargetDistance == true){
             lastRecorded0 = Robot.kNavX.getIMUPitch();
             recordtarget0 = false;    
@@ -89,68 +126,8 @@ public class NavXSeeker extends Command {
             Robot.Drive.driveTank(-turnSpeed, turnSpeed);
 
         }
-
-        /*
-        Matthew's suggested code layout
-        Think of this command running as something that runs in stages
-        In each stage the robot will behaves differently
-        All we need is some sort of tracker that knows what stage we are in,
-        and a logic block that can make us run the proper stage
-        Each stage would also have an exit condition: something that would trigger the next stage once satisfied
-        There's already a great piece of logic we can use for this called a switch statment
-        You can find an example of a switch statement in the nextColorClockwise function in the ColorSensor subsystem
-        It would look something like this
         
-        int stage = 1;
-        switch (stage) {
-            case 1:
-                //Stage one code
-                //Activate the SeekVisionTarget command
-                //Check to see if SeekVisionTarget finished. If it did, stage++;
-                //Finally, we need a break; statememt to end the swtich.
-                //Without it, the program will continue to run the code for ALL the following cases, despite the fact that their cases haven't
-                //Been triggered, until it encounters a break; statement.
-                break;
-            case 2:
-                //Stage two code
-                //Set a heading by adding the current heading from the navX to the angle the limelight shows we are currently at from the target
-                //we only want this to happen once, so we can immediately write stage++;
-                break;
-            case 3:
-                //Stage three code
-                //Drive at the specified heading
-                //Check to see if we've crashed. If we have, stage++;
-                break;
-            case 4:
-                //Stage 4 code
-                //Record or reset the timer object
-                stage++;
-                break;
-            case 5:
-                //Stage 5 code
-                //Run for a set ammount of time to make sure we are flat against the wall
-                //We don't want to put a delay() function here, becasue that would delay the entire robot, not just this command
-                //Check to see if the neccessary amount of time has passed. If so, stage++;
-                break;
-            case 6:
-                //Stage 6 code
-                //Record or reset the timer object
-                stage++;
-                break;
-            case 7:
-                //Stage 7 code
-                //Deposit fuel cells
-                //Again, wait a certain amount of time
-                //Check to see if the neccessary amount of time has passed. If so, stage++;
-                break;
-            default:
-                //If none of the previous conditions are true
-                //Set all motor powers to 0
-                //Make the isFinished function return true when stage == 8
-                break;
         }
-        */
-    }
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
