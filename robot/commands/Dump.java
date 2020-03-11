@@ -32,9 +32,15 @@ public class Dump extends Command {
 	@Override
 	protected void execute() {
         while (Robot.map.lswitchBottom.get()) {
-            Robot.map.shooterLift.set(-0.1);
+            Robot.map.shooterLift.set(-0.15);
         }
         Robot.map.shooterLift.set(0);
+        Robot.kShooter.shoot();
+        time.delay(2);
+        Robot.kShooter.Stop();
+        Robot.Drive.driveTank(0.1, 0.1);
+        time.delay(2);
+        Robot.Drive.driveTank(0, 0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
