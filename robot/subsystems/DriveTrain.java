@@ -60,5 +60,27 @@ public class DriveTrain extends Subsystem {
     	//insert wait command here
     	stop();
     }
+
+    public void driveAtAngle(double speed, double angle) {
+        double error = Robot.kNavX.getYaw() - angle;
+        double steeringConstant = 0.1;
+        double maxSteeringAdjust = 0.3;
+        if (error > 180) {
+            error =- 360;
+        }
+        if (error < -180) {
+            error =+ 360;
+        }
+
+        double steeringAdjust = error*steeringConstant;
+        if (steeringAdjust > 0.3) {
+            steeringAdjust = 0.3;
+        }
+        if (steeringAdjust < -0.3) {
+            steeringAdjust = -0.3;
+        }
+
+        driveTank(speed + steeringAdjust, speed - steeringAdjust);
+    }
 }
 
