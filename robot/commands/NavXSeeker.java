@@ -40,13 +40,17 @@ public class NavXSeeker extends Command {
 	//speeds to give for the drive motors(after adjustments)
 	double lspeed;
     double rspeed;
-    
+
+    //speeds for the motors as they are pushing up against the wall
+    double crashspeed;
+
     //max value of steering adjust
     public final double steeringcap = 0.3;
 
     //value for the stage when it starts running
     public int stage = 1;
 
+    //timer for the robot to give it time to push up against the wall
     public Timer time
     = new Timer();
 
@@ -56,7 +60,7 @@ public class NavXSeeker extends Command {
     public static SeekVisionTarget kSeekVisionTarget
     = new SeekVisionTarget();
 
-    boolean recordtarget0;
+    double recordtarget0;
 
 	public NavXSeeker() {
     //requires(Robot.kExampleSubsystem);
@@ -68,12 +72,19 @@ public class NavXSeeker extends Command {
 	protected void initialize() {
        steeringAdjust = 0;
        current0 = Robot.kNavX.getIMUPitch();
-	}
-
+    }
+   
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
         //This sets the last recorded Pitch(left to right turns) that the robot was at before it lost track of the target when it was using the lime light
+        if(Robot.map.lswitchTop.get()){
+            Robot.map.shooterLift.set(0.3);
+        }
+        else if(!Robot.map.lswitchTop.get()){
+            Robot.map.shooterLift.set(0);
+        }
+        
         switch(stage){
             case 1 : 
                 Scheduler.getInstance().add(kSeekVisionTarget);
@@ -87,7 +98,7 @@ public class NavXSeeker extends Command {
                 break;
             case 3 :
                 Robot.Drive.driveTank(lspeed, rspeed);
-                if(Robot.kNavX.hasCrashed() == true){
+                if(Robot.kNavX.hasCrashed() == true && !Robot.map.lswitchTop.get()){
                     stage++;
                 }
                 break;
@@ -96,48 +107,42 @@ public class NavXSeeker extends Command {
                 stage++;
                 break;
             case 5 :
-                if(time() == 5){
+                Robot.Drive.driveTank(crashspeed, -crashspeed);
+                if(time.get() > 2000){
                     stage++;
                 }
                 break;
             case 6 :
+                time.reset();
+                stage++;
+                break;
             case 7 :
+                    Robot.kShooter.shoot();
+                if(time.get() > 1500){
+                    Robot.kShooter.Stop();
+                    stage++;
+                }
+                break;
+            default:
+                Robot.Drive.driveTank(0, 0);
+                Robot.kShooter.Stop();
+            }
         }
-		if(Robot.kSeekVisionTarget.reachedTargetDistance == true){
-            lastRecorded0 = Robot.kNavX.getIMUPitch();
-            recordtarget0 = false;    
-        }    
-        //adjusting the robot to be at the correct angle when moving towards the target
-        steeringAdjust = Math.abs(current0) - Math.abs(lastRecorded0);
-        if(steeringAdjust > steeringcap){
-            steeringAdjust = steeringcap;
-        }
-        else if(steeringAdjust < -steeringcap){
-            steeringAdjust = -steeringcap;
-        }
-        lspeed = steeringAdjust - kdrivespeed;
-        rspeed = steeringAdjust + kdrivespeed;
-        //speed of the robot
-        Robot.Drive.driveTank(lspeed, rspeed);
-        if(steeringAdjust > 10){
-            Robot.Drive.driveTank(turnSpeed, -turnSpeed);
-        }
-        else if(steeringAdjust <-10){
-            Robot.Drive.driveTank(-turnSpeed, turnSpeed);
-
-        }
-        
-        }
-
-	// Make this return true when this Command no longer needs to run execute()
+    // Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+        if(stage == 8){
+            return true;
+        }
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+        Robot.Drive.driveTank(0, 0);
+        Robot.kShooter.Stop();
+        Robot.map.shooterLift.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
