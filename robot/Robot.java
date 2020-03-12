@@ -57,10 +57,16 @@ public class Robot extends TimedRobot {
 	= new SeekVisionTarget();
 	public static ColorFinder kColorFinder
 	= new ColorFinder();
+	public NavXSeeker kNavXSeeker
+	= new NavXSeeker();
 	// public static RotationControl kRotationControl
 	// = new RotationControl();
 
 	double speedDrop;
+
+	public static boolean hasCrashed = false;
+
+	public boolean button = false;
 
     //Declaring commands
 	Command m_autonomousCommand;
@@ -179,24 +185,39 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-		teleOpControl();
+		//Checks to see if left button one is pressed
+		if (manipButtons.y.get()) {
+			//Runs vision seeking controls
+			manipButtons.y.whileHeld(kNavXSeeker);
+		}
+		else {
+			//Runs manual controls
+			teleOpControl();
+		}
+		Scheduler.getInstance().run();
+
+		SmartDashboard.putBoolean("limit switch top:", map.lswitchTop.get());
+		SmartDashboard.putBoolean("limit switch bottom:", map.lswitchBottom.get());
+		SmartDashboard.putNumber("Pitch:", kNavX.getIMUPitch());
+		SmartDashboard.putNumber("Yaw:", kNavX.getYaw());
+		SmartDashboard.putNumber("Roll:", kNavX.getRoll());
+		SmartDashboard.putNumber("DisplacementX:", kNavX.getXDisplacement());
+		SmartDashboard.putNumber("DisplacementY:", kNavX.getYDisplacement());
+		SmartDashboard.putNumber("DisplacementZ:", kNavX.getZDisplacement());
+		hasCrashed = kNavX.hasCrashed();
+		SmartDashboard.putBoolean("Collision detected: ", hasCrashed);
+		SmartDashboard.putBoolean("Arm position up:", kShooter.armPositionUp);
+
+		//Robot.kShooter.moveToPosition();
 	}
 
 	public void teleOpControl() {
 		//Prints the encoder reading
 		//System.out.println("Encoder: " + encoder.getDistance());
-		Scheduler.getInstance().run();
 		//Drive controls
 		
-		//Checks to see if left button one is pressed
-		if (manipButtons.y.get()) {
-			//Runs vision seeking controls
-			manipButtons.y.whileHeld(kSeekVisionTarget);
-		}
-		else {
-			//Runs manual controls
-			Drive.driveTank(m_oi.getLeftY(m_oi.driveController)*speedDrop, m_oi.getRightY(m_oi.driveController)*speedDrop);
-		}
+		//Runs manual controls
+		Drive.driveTank(m_oi.getLeftY(m_oi.driveController)*speedDrop, m_oi.getRightY(m_oi.driveController)*speedDrop);
 
 		//This controls the intake arm of the robot
 		//find out the directions of the motor before you test the buttons on the robot
@@ -209,10 +230,22 @@ public class Robot extends TimedRobot {
 		else{
 			map.shooterLift.set(0);
 		}
+		// if(manipButtons.lb.get()){
+		// 	kShooter.armPositionUp = true;
+		// 	button = false;
+		// }
+		// else if(manipButtons.lb.get() && manipButtons.lb.get()){
+		// 	kShooter.armPositionUp = false;
+		// 	button = true;
+		// }
+		
+		
+		
 
 		//shooter controls
 		if(m_oi.getLeftTrigger(m_oi.driveController) > 0) {
 			kShooter.shoot();
+			
 		}
 		else if(m_oi.getRightTrigger(m_oi.driveController) > 0) {
 			kShooter.intake();
@@ -246,7 +279,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("DisplacementX:", kNavX.getXDisplacement());
 		SmartDashboard.putNumber("DisplacementY:", kNavX.getYDisplacement());
 		SmartDashboard.putNumber("DisplacementZ:", kNavX.getZDisplacement());
-		SmartDashboard.putBoolean("Collision detected: ", kNavX.hasCrashed());
+		hasCrashed = kNavX.hasCrashed();
+		SmartDashboard.putBoolean("Collision detected: ", hasCrashed);
 		// SmartDashboard.putNumber("Lidar:", kLidar.getDistanceIn(false));
 
 		if (driveButtons.rb.get()) {

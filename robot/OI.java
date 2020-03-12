@@ -71,13 +71,15 @@ public class OI {
 		return stick.getRawAxis(0);
 	}
 	public static double getLeftY(Joystick stick) {
-		return stick.getRawAxis(1);
+		//Returns the inverted value because pushing the stick forward returns a negative value
+		return -stick.getRawAxis(1);
 	}
 	public static double getRightX(Joystick stick) {
 		return stick.getRawAxis(4);
 	}
 	public static double getRightY(Joystick stick) {
-		return stick.getRawAxis(5);
+		//Returns the inverted value because pushing the stick forward returns a negative value
+		return -stick.getRawAxis(5);
 	}
 	public static double getLeftTrigger(Joystick stick) {
 		return stick.getRawAxis(2);
