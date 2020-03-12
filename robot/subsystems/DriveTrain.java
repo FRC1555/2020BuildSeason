@@ -29,14 +29,14 @@ public class DriveTrain extends Subsystem {
     
     //Drives the robot with two separate powers for the wheels
     public void driveTank(double Lspeed, double Rspeed) {
-    	Robot.map.leftDrive.set(-Lspeed);
-    	Robot.map.rightDrive.set(Rspeed);
+    	Robot.map.leftDrive.set(Lspeed);
+    	Robot.map.rightDrive.set(-Rspeed);
     }
 
     //Drives the robot as if the front were the back
     public void driveTankInverted(double Lspeed, double Rspeed) {
-    	Robot.map.leftDrive.set(Rspeed);
-    	Robot.map.rightDrive.set(-Lspeed);
+    	Robot.map.leftDrive.set(-Rspeed);
+    	Robot.map.rightDrive.set(Lspeed);
     }
     
     //Drives straight
@@ -73,14 +73,14 @@ public class DriveTrain extends Subsystem {
         }
 
         double steeringAdjust = error*steeringConstant;
-        if (steeringAdjust > 0.3) {
-            steeringAdjust = 0.3;
+        if (steeringAdjust > maxSteeringAdjust) {
+            steeringAdjust = maxSteeringAdjust;
         }
-        if (steeringAdjust < -0.3) {
-            steeringAdjust = -0.3;
+        if (steeringAdjust < -maxSteeringAdjust) {
+            steeringAdjust = -maxSteeringAdjust;
         }
 
-        driveTank(speed + steeringAdjust, speed - steeringAdjust);
+        driveTank((speed - steeringAdjust), (speed + steeringAdjust));
     }
 }
 

@@ -22,9 +22,6 @@ public class encoder extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-
-	public static CANEncoder encShooterA = Robot.map.encShooterA;
-	public static CANEncoder encShooterB = Robot.map.encShooterB;
 	public static Encoder encDriveL = Robot.map.encDriveL;
 	public static Encoder encDriveR = Robot.map.encDriveR;
 	public static Encoder encLiftCPI = Robot.map.encLiftCPI;
@@ -167,7 +164,5 @@ public class encoder extends Subsystem {
 // double rate = sampleEncoder.getRate();
 // boolean direction = sampleEncoder.getDirection();
 // boolean stopped = sampleEncoder.getStopped();
-
-
 
 }
