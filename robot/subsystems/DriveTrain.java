@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -23,14 +24,17 @@ public class DriveTrain extends Subsystem {
     
     //Stops the drive train
     public void stop() {
-    	Robot.map.leftDrive.stopMotor();
-        Robot.map.rightDrive.stopMotor();
-    }
+    	Robot.map.leftDrive.set(0);
+        Robot.map.rightDrive.set(0);
+        SmartDashboard.putNumber("Left Drive speed: ", 0);
+        SmartDashboard.putNumber("Right Drive speed: ", 0);    }
     
     //Drives the robot with two separate powers for the wheels
     public void driveTank(double Lspeed, double Rspeed) {
     	Robot.map.leftDrive.set(Lspeed);
-    	Robot.map.rightDrive.set(-Rspeed);
+        Robot.map.rightDrive.set(-Rspeed);
+        SmartDashboard.putNumber("Left Drive speed: ", Lspeed);
+        SmartDashboard.putNumber("Right Drive speed: ", Rspeed);
     }
 
     //Drives the robot as if the front were the back
