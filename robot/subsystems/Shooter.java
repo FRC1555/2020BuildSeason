@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -23,8 +24,8 @@ public class Shooter extends Subsystem {
 	// TODO: edit this reference to the SparkMAXs
 	// public CANSparkMax shoot1;
 	// public CANSparkMax shoot2;
-	private boolean movingshooterLift=false;
-	boolean armPositionUp = false;
+	private final boolean movingshooterLift=false;
+	public boolean armPositionUp = false;
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
@@ -39,14 +40,13 @@ public class Shooter extends Subsystem {
 
 	//It is assumed that the motors will spin in opposite directions
 	//Therefore, we will always activate them using this method
-	public void shooterPower(double power) {
-		// shoot1.set(power);
-		// shoot2.set(-power);
+	public void shooterPower(final double power) {
 		Robot.map.Shooter.set(power);
+		SmartDashboard.putNumber("Shooter power: ", power);
 	}
 
 	public void shoot() {
-		shooterPower(1);
+		shooterPower(0.7);
 	}
     public void Stop() {
 		shooterPower(0);
@@ -54,19 +54,6 @@ public class Shooter extends Subsystem {
     public void intake() {
         shooterPower(-0.3);
 	}
-
-	// public void toggleShooterLift(){
-	// 	if(!lswitchBottom.get() && lswitchTop.get() && !movingshooterLift){
-	// 			shooterLift.set(0.3);
-	// 			movingshooterLift=true;
-	// 	}else if(lswitchBottom.get() && !lswitchTop.get() && !movingshooterLift){
-	// 			shooterLift.set(-0.1);
-	// 			movingshooterLift=true;
-	// 	}else if(movingshooterLift && (!lswitchBottom.get() || !lswitchTop.get())){
-	// 		shooterLift.set(0);
-	// 		movingshooterLift=false;
-	// 	}
-	// }
 
 	public void moveToPosition() {
 		DigitalInput lswitch;
@@ -82,11 +69,13 @@ public class Shooter extends Subsystem {
 		}
 
 		//Moves to the appropriate position
-		if (!lswitch.get()) {
+		if (lswitch.get()) {
 			Robot.map.shooterLift.set(armSpeed);
+			SmartDashboard.putNumber("Arm Speed: ", armSpeed);
 		}
 		else {
 			Robot.map.shooterLift.set(0);
+			SmartDashboard.putNumber("Arm Speed: ", 0);
 		}
 	}
 }
