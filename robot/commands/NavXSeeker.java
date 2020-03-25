@@ -12,6 +12,7 @@ import org.opencv.core.Mat;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 
@@ -24,43 +25,21 @@ public class NavXSeeker extends Command {
     //This value will hold the value for the angle that was last recorded before the limelight was not within distance of the target
     public double lastRecorded0;
 
-    //This value will hold the current recorded angle from the navx
-    public double current0;
-
     //default speed for the motors
     public final double kdrivespeed = 0.2;
     
-    //Turning speed for the robot when aligning itself for the last recorded 0 
-	double turnSpeed = 0.25;
-
-    //This value will have the power adjustment for the motors
-    double speedAdjust;
-    double steeringAdjust;
-
-	//speeds to give for the drive motors(after adjustments)
-	double lspeed;
-    double rspeed;
-
     //speeds for the motors as they are pushing up against the wall
-    double crashspeed;
+    final double crashspeed = 0.4;
 
-    //max value of steering adjust
-    public final double steeringcap = 0.3;
-
-    //value for the stage when it starts running
-    public int stage = 1;
+    //Keeps track of what stage the command is in
+    public int stage;
 
     //timer for the robot to give it time to push up against the wall
     public Timer time
     = new Timer();
-
-    //sets the difference in angle to 0 if the absolute value of the angle is less than 3 degrees away from the target angle
-    public final double Angletolerancethreshold = 3;
     
-    public static SeekVisionTarget kSeekVisionTarget
-    = new SeekVisionTarget();
-
-    double recordtarget0;
+    //The command we will be using for aligning with the target
+    public static SeekVisionTarget kSeekVisionTarget;
 
 	public NavXSeeker() {
     //requires(Robot.kExampleSubsystem);
@@ -70,64 +49,75 @@ public class NavXSeeker extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-       steeringAdjust = 0;
-       current0 = Robot.kNavX.getIMUPitch();
+        kSeekVisionTarget = new SeekVisionTarget();
+        stage = 1;
     }
    
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        //This sets the last recorded Pitch(left to right turns) that the robot was at before it lost track of the target when it was using the lime light
-        if(Robot.map.lswitchTop.get()){
-            Robot.map.shooterLift.set(0.3);
-        }
-        else if(!Robot.map.lswitchTop.get()){
-            Robot.map.shooterLift.set(0);
-        }
+        //Sets the arm to move up
+        Robot.kShooter.armPositionUp = true;
         
+        //Runs through the different steps for scoring
         switch(stage){
             case 1 : 
+                //Uses the limelight to align itself and move towards the goal
                 Scheduler.getInstance().add(kSeekVisionTarget);
-                if(kSeekVisionTarget.reachedTargetDistance == true){
+                if(kSeekVisionTarget.isCompleted()){
                     stage ++;   
                 } 
                 break; 
             case 2 :
+                //Records the angle of the target relative to the robot.
                 lastRecorded0 = Robot.kLimelight.getLimeX() + Robot.kNavX.getYaw();
                 stage ++;
                 break;
-            case 3 :
-                Robot.Drive.driveTank(lspeed, rspeed);
-                if(Robot.kNavX.hasCrashed() == true && !Robot.map.lswitchTop.get()){
+            case 3 : 
+                //Waits for the limit switch to be pressed
+                if (!Robot.map.lswitchTop.get()) {
                     stage++;
                 }
                 break;
             case 4 :
-                time.reset();
-                stage++;
+                //Drives toward the target
+                Robot.Drive.driveAtAngle(kdrivespeed, lastRecorded0);
+                if(Robot.hasCrashed){
+                    stage++;
+                    //Prepares the timer for the next step
+                    time.reset();
+                    time.start();
+                }
                 break;
             case 5 :
-                Robot.Drive.driveTank(crashspeed, -crashspeed);
-                if(time.get() > 2000){
+                //Runs until the robot crashes into the wall
+                Robot.Drive.driveTank(crashspeed, crashspeed);
+                if(time.get() > 2){
+                    Robot.Drive.stop();
                     stage++;
                 }
                 break;
             case 6 :
+                //Prepares the timer for the next step
                 time.reset();
                 stage++;
                 break;
             case 7 :
-                    Robot.kShooter.shoot();
-                if(time.get() > 1500){
+                //Shoots the power cells into the goal
+                Robot.kShooter.shoot();
+                if(time.get() > 1.5){
                     Robot.kShooter.Stop();
                     stage++;
                 }
                 break;
             default:
-                Robot.Drive.driveTank(0, 0);
+                //Stops the robot
+                Robot.Drive.stop();
                 Robot.kShooter.Stop();
             }
-        }
+
+            SmartDashboard.putNumber("Stage: ", stage);
+    }
     // Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
@@ -140,9 +130,8 @@ public class NavXSeeker extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-        Robot.Drive.driveTank(0, 0);
+        Robot.Drive.stop();
         Robot.kShooter.Stop();
-        Robot.map.shooterLift.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
