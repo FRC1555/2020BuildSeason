@@ -98,17 +98,17 @@ public class NavX extends Subsystem {
     }
 //acceleration in all 3 dimensions
     public double getXAcceleration(){
-        Float floatXAcceleration = Robot.map.ahrs.getRawAccelX();
+        Float floatXAcceleration = Robot.map.ahrs.getWorldLinearAccelX();
         Double doubleXAcceleration = (double) floatXAcceleration;
         return doubleXAcceleration;
     }
     public double getYAcceleration(){
-        Float floatYAcceleration = Robot.map.ahrs.getRawAccelY();
+        Float floatYAcceleration = Robot.map.ahrs.getWorldLinearAccelY();
         Double doubleYAcceleration = (double) floatYAcceleration;
         return doubleYAcceleration;
     }
     public double getZAcceleration(){
-        Float floatZAcceleration = Robot.map.ahrs.getRawAccelZ();
+        Float floatZAcceleration = Robot.map.ahrs.getWorldLinearAccelZ();
         Double doubleZAcceleration = (double) floatZAcceleration;
         return doubleZAcceleration;
     }
