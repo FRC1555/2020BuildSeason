@@ -134,13 +134,17 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
+		// String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		// switch(autoSelected) 
+		// { case "My Auto": autonomousCommand
+		// 	= new NavXSeeker(); 
+		// 	break; 
+		// case "Default Auto": 
+		// default:
+		// 	autonomousCommand = new ExampleCommand(); 
+		// 	break; 
+		// }
+		
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
@@ -156,7 +160,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		teleOpControl();
 	}
 	
 	@Override
@@ -186,9 +189,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		//Checks to see if left button one is pressed
-		if (manipButtons.y.get()) {
+		if (driveButtons.start.get()) {
 			//Runs vision seeking controls
-			manipButtons.y.whileHeld(kNavXSeeker);
+			driveButtons.start.whileHeld(kNavXSeeker);
 		}
 		else {
 			//Runs manual controls
@@ -201,14 +204,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Pitch:", kNavX.getIMUPitch());
 		SmartDashboard.putNumber("Yaw:", kNavX.getYaw());
 		SmartDashboard.putNumber("Roll:", kNavX.getRoll());
-		SmartDashboard.putNumber("DisplacementX:", kNavX.getXDisplacement());
-		SmartDashboard.putNumber("DisplacementY:", kNavX.getYDisplacement());
-		SmartDashboard.putNumber("DisplacementZ:", kNavX.getZDisplacement());
 		hasCrashed = kNavX.hasCrashed();
 		SmartDashboard.putBoolean("Collision detected: ", hasCrashed);
 		SmartDashboard.putBoolean("Arm position up:", kShooter.armPositionUp);
 
-		//Robot.kShooter.moveToPosition();
+		Robot.kShooter.moveToPosition();
 	}
 
 	public void teleOpControl() {
