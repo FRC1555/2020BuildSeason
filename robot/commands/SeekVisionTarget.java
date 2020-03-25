@@ -8,10 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.beans.PropertyChangeListener;
 
 import frc.robot.Robot;
+import frc.robot.OI.driveButtons;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -50,7 +52,9 @@ public class SeekVisionTarget extends Command {
 	public final double defaultSpeed = 0.2;
 	
 	//The speed the robot will turn at when searching for the target
-	public final double turnSpeed = 0.25;
+	// public final double turnSpeed = 0.25;
+	public final double turnSpeed = 0;
+
 
 	// Called just before this Command runs the first time
 	@Override
@@ -60,7 +64,7 @@ public class SeekVisionTarget extends Command {
 	zError = 0;
 	steeringAdjust = 0;
 	pole = 1;
-	Robot.kLimelight.setPipe(0);
+	Robot.kLimelight.setPipe(1);
 
 	System.out.println("Inititalized");
 
@@ -69,9 +73,6 @@ public class SeekVisionTarget extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-
-		//Feedback to ensure the tracking is calling
-		System.out.println("Seeking");
 
         //Checks for a target
 		if (Robot.kLimelight.targetVisible()) {
@@ -97,11 +98,11 @@ public class SeekVisionTarget extends Command {
 						
 			lSpeed = speedAdjust + steeringAdjust - defaultSpeed;
 			rSpeed = speedAdjust - steeringAdjust - defaultSpeed;
+			SmartDashboard.putNumber("zError:", zError);
 			
 			//Drives toward the target
 			Robot.Drive.driveTank(lSpeed, rSpeed);
 			
-		  
 		}
 		//Runs if the limelight can't see a target
 		else {
@@ -123,12 +124,16 @@ public class SeekVisionTarget extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		if ((Math.abs(zError) < 8) || driveButtons.select.get()) {
+			return true;
+		}
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Robot.Drive.stop();
 	}
 
 	// Called when another command which requires one or more of the same
